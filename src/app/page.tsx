@@ -1,10 +1,10 @@
+import Header from "./_components/header";
 import { Button } from "./_components/ui/button";
 
 export default function Home() {
   return (
     <>
-      <h1>Hello, World</h1>
-      <p>Teste</p>
+      <Header />
 
       <Button>BUTAO</Button>
     </>
