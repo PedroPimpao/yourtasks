@@ -1,17 +1,19 @@
-import { LogIn, Menu } from "lucide-react";
+"use client";
+import { Menu } from "lucide-react";
 import Logo from "./logo";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
-import Link from "next/link";
+import { Sheet, SheetTrigger } from "./ui/sheet";
+import SidebarSheet from "./sidebar-sheet";
+// import Link from "next/link";
+// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+// import { useSession } from "@/src/lib/auth-client";
+// import Image from "next/image";
+// import ProfileInfoCard from "./profile-info-card";
+// import AuthCard from "./auth-card";
 
 const Header = () => {
+  // const { data } = useSession();
   return (
     <>
       <Card className="flex flex-row items-center justify-between p-4">
@@ -26,19 +28,7 @@ const Header = () => {
               <Menu />
             </Button>
           </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle className="flex justify-start p-4 text-2xl">Perfil</SheetTitle>
-            </SheetHeader>
-            <div className="flex flex-row items-center justify-around p-3">
-              <h2>Faça seu login</h2>
-              <Link href={"signup"}>
-                <Button variant={"default"} className="cursor-pointer">
-                  <LogIn />
-                </Button>
-              </Link>
-            </div>
-          </SheetContent>
+          <SidebarSheet />
         </Sheet>
       </Card>
     </>
