@@ -17,37 +17,37 @@ import { useRouter } from "next/navigation";
 import { Button } from "../../_components/ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
-const signupSchema = z.object({
+const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
   password: z
     .string()
     .min(8, { message: "Senha deve ter no mínimo 8 caracteres" }),
 });
 
-type SignUpFormValues = z.infer<typeof signupSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-
   const router = useRouter();
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signupSchema),
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (formData: SignUpFormValues) => {
+  const onSubmit = async (formData: LoginFormValues) => {
     const {} = await authClient.signIn.email(
       {
         email: formData.email,
         password: formData.password,
         callbackURL: "/",
+        rememberMe: true,
       },
       {
         onSuccess: (ctx) => {
-          console.log(`CADASTRADO: ${ctx.data}`);
+          console.log(`LOGADO: ${ctx.data}`);
           router.replace("/");
         },
         onError: (err) => {
