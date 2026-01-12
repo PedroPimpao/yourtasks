@@ -1,9 +1,9 @@
 "use client";
 import { useSession } from "../lib/auth-client";
-// import { db } from "../lib/prisma";
 import Header from "./_components/header";
 import { defaultTasksData } from "./_constants/default-tasks-data";
-// import { Button } from "./_components/ui/button";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function Home() {
   // const date = new Date()
@@ -12,12 +12,24 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="p-4 font-bold">
-        Olá, {data?.user ? data.user.name : "Visitante"}!
+      <div className="flex flex-col p-4">
+        <div className="font-bold">Olá, {data?.user ? data.user.name : "Visitante"}!</div>
+        <div>
+          <span className="capitalize">
+            {format(new Date(), "EEEE, ", { locale: ptBR })}
+          </span>
+          <span className="">
+            {format(new Date(), "d 'de' ", { locale: ptBR })}
+          </span>
+          <span className="capitalize">
+            {format(new Date(), "MMMM", { locale: ptBR })}
+          </span>
+        </div>
       </div>
+
       {/* <div>{date.getDay()}</div> */}
       {defaultTasksData.map((task) => (
-        <div key={task.id} className="p-4 border-b">
+        <div key={task.id} className="border-b p-4">
           <h2 className="font-semibold">{task.title}</h2>
           <p>{task.description}</p>
         </div>
