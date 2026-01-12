@@ -1,14 +1,10 @@
-import { authClient, useSession } from "@/src/lib/auth-client";
+import { useSession } from "@/src/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Image from "next/image";
 import { User } from "lucide-react";
-import { Button } from "./ui/button";
 
 const ProfileInfoCard = () => {
   const { data } = useSession();
-  const signOut = async () => {
-    await authClient.signOut();
-  };
 
   return (
     <>
@@ -34,7 +30,6 @@ const ProfileInfoCard = () => {
             <p className="text-muted-foreground text-sm">{data?.user?.email}</p>
           </div>
         </div>
-        <Button className="mt-4 w-[60%] cursor-pointer" onClick={signOut}>Sair da conta</Button>
       </div>
     </>
   );
