@@ -1,8 +1,15 @@
+"use client"
 import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
 import { SignUpForm } from "./_components/signup-form";
+import { useSession } from "@/src/lib/auth-client";
+import { redirect } from "next/navigation";
 
 const SignUp = () => {
+  const { data } = useSession();
+  if (data?.user) {
+    redirect("/");
+  }
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
@@ -24,8 +31,10 @@ const SignUp = () => {
         <SocialAuthOptions />
         <div className="mt-3 h-px w-full bg-gray-300 dark:bg-gray-600"></div>
         <div className="flex flex-row gap-2 text-sm">
-            <p>Já possui uma conta?</p>
-            <Link href={'/login'} className="text-green-300 hover:underline">Faça login</Link>
+          <p>Já possui uma conta?</p>
+          <Link href={"/login"} className="text-green-300 hover:underline">
+            Faça login
+          </Link>
         </div>
       </div>
     </div>
