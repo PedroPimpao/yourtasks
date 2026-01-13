@@ -5,11 +5,8 @@ import { Badge } from "./_components/ui/badge";
 import { defaultTasksData } from "./_constants/default-tasks-data";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Button } from "./_components/ui/button";
-import { Loader, Plus } from "lucide-react";
 import Link from "next/link";
-import { Dialog, DialogTrigger } from "./_components/ui/dialog";
-import CreateTaskForm from "./_components/create-task-form";
+import CreateTaskDialog from "./_components/create-task-dialog";
 
 export default function Home() {
   const { data } = useSession();
@@ -34,14 +31,7 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <Dialog>
-          <DialogTrigger>
-            <Button className="cursor-pointer">
-              <Plus /> Nova Tarefa
-            </Button>
-          </DialogTrigger>
-          <CreateTaskForm/>
-        </Dialog>
+        <CreateTaskDialog />
       </div>
 
       <div className="flex flex-row items-center justify-around p-4">
@@ -60,9 +50,6 @@ export default function Home() {
                 <h2 className="font-semibold">{task.title}</h2>
                 <p>{task.description}</p>
               </div>
-              <Button size={"icon"} variant={"outline"}>
-                <Loader />
-              </Button>
             </div>
           </Link>
         </div>
