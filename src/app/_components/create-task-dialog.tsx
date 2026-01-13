@@ -24,6 +24,8 @@ import { Textarea } from "./ui/textarea";
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { useState } from "react";
+import { RadioGroup } from "./ui/radio-group";
+import RadioItem from "./radio-item";
 
 const CreateTaskDialog = () => {
   const [createDialogIsOpen, setCreateDialogIsOpen] = useState(false);
@@ -36,12 +38,15 @@ const CreateTaskDialog = () => {
     title: z
       .string()
       .min(3, { message: "O título deve ter no mínimo 3 caracteres" }),
-    description: z
-      .string()
-      .min(10, { message: "A descrição deve ter no mínimo 10 caracteres" }),
+    description: z.string().optional(),
     dueDate: z
-      .string()
-      .refine((date) => !isNaN(Date.parse(date)), { message: "Data inválida" }),
+      .date({
+        message: "Data de vencimento inválida",
+      })
+      .optional(),
+    priority: z.enum(["alta", "media", "baixa", "urgente"], {
+      message: "Prioridade inválida",
+    }),
   });
 
   type TaskFormValues = z.infer<typeof taskSchema>;
@@ -51,13 +56,15 @@ const CreateTaskDialog = () => {
     defaultValues: {
       title: "",
       description: "",
-      dueDate: "",
+      dueDate: undefined,
+      priority: "media",
     },
   });
 
   const onSubmit = (data: TaskFormValues) => {
     console.log("Creating task:", data);
   };
+
   return (
     <>
       <Dialog open={createDialogIsOpen} onOpenChange={setCreateDialogIsOpen}>
@@ -104,19 +111,62 @@ const CreateTaskDialog = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex items-center justify-center">
-                <Calendar
-                  mode="single"
-                  locale={ptBR}
-                  disabled={{ before: new Date() }}
+              <div className="flex flex-col items-center justify-around gap-4">
+                <FormField
+                  control={form.control}
+                  name="priority"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="">Prioridade</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          className="ml-4 flex flex-row justify-around"
+                          {...field}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <RadioItem id="r1" value="baixa" label="Baixa" />
+                          <RadioItem id="r2" value="media" label="Média" />
+                          <RadioItem id="r3" value="alta" label="Alta" />
+                          <RadioItem id="r4" value="urgente" label="Urgente" />
+                        </RadioGroup>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="dueDate"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel className="mt-6">Data de vencimento</FormLabel>
+                      <div className="flex justify-center">
+                        <FormControl className="">
+                          <Calendar
+                            mode="single"
+                            locale={ptBR}
+                            disabled={{ before: new Date() }}
+                            selected={field.value}
+                            onSelect={(date) => field.onChange(date)}
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-              <div className="flex w-full gap-2 flex-row">
+              <div className="flex w-full flex-row gap-2">
                 <DialogClose
                   className="flex w-full flex-row justify-around gap-2"
                   asChild
                 >
-                  <Button variant={"outline"} type="reset" className="w-[50%] cursor-pointer">
+                  <Button
+                    variant={"outline"}
+                    type="reset"
+                    className="w-[50%] cursor-pointer"
+                  >
                     Cancelar
                   </Button>
                 </DialogClose>
