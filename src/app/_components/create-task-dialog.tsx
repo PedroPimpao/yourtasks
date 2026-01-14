@@ -1,3 +1,4 @@
+"use client"
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -26,6 +27,7 @@ import { ptBR } from "date-fns/locale";
 import { useState } from "react";
 import { RadioGroup } from "./ui/radio-group";
 import RadioItem from "./radio-item";
+import { createTask } from "../_actions/create-task";
 
 const CreateTaskDialog = () => {
   const [createDialogIsOpen, setCreateDialogIsOpen] = useState(false);
@@ -63,6 +65,12 @@ const CreateTaskDialog = () => {
 
   const onSubmit = (data: TaskFormValues) => {
     console.log("Creating task:", data);
+    createTask({
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate,
+      priority: data.priority
+    })
   };
 
   return (
