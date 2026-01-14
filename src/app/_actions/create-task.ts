@@ -1,6 +1,7 @@
 "use server";
 import { auth } from "@/src/lib/auth";
 import { db } from "@/src/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 interface CreateTaskParams {
@@ -28,4 +29,5 @@ export const createTask = async (params: CreateTaskParams) => {
       userId: session.user.id,
     },
   });
+  revalidatePath('/')
 };
