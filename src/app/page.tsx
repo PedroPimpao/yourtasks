@@ -1,14 +1,13 @@
 import Header from "./_components/header";
 import { Badge } from "./_components/ui/badge";
-import { defaultTasksData } from "./_constants/default-tasks-data";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import CreateTaskDialog from "./_components/create-task-dialog";
 import { auth } from "../lib/auth";
 import { headers } from "next/headers";
-import { db } from "../lib/prisma";
 import { getTasks } from "./_actions/getTasks";
+import TaskCard from "./_components/task-card";
 
 
 export default async function Home() {
@@ -53,29 +52,10 @@ export default async function Home() {
         <Badge className="bg-orange-400">0 Em andamento</Badge>
       </div>
 
-      {defaultTasksData.map((task) => (
-        <div key={task.id} className="">
-          <Link href={`/tasks/${task.id}`}>
-            <div className="flex flex-row items-center justify-between border-b p-4">
-              <div>
-                <h2 className="font-semibold">{task.title}</h2>
-                <p>{task.description}</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-      ))}
-
-      <h3>Tasks do DB</h3>
       {tasks.map((task) => (
         <div key={task.id} className="">
           <Link href={`/tasks/${task.id}`}>
-            <div className="flex flex-row items-center justify-between border-b p-4">
-              <div>
-                <h2 className="font-semibold">{task.title}</h2>
-                <p>{task.description}</p>
-              </div>
-            </div>
+            <TaskCard key={task.id} taskTitle={task.title} taskPriority={task.priority}/>
           </Link>
         </div>
       ))}
