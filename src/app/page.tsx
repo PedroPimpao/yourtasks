@@ -17,10 +17,6 @@ export default async function Home() {
 
   const tasks = await getTasks()
 
-  tasks.map((task) => {
-    console.log(task.title)
-  })
-
   return (
     <>
       <Header />

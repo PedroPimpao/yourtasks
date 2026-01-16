@@ -1,36 +1,30 @@
-import { auth } from "@/src/lib/auth";
-import { Drawer, DrawerContent, DrawerTitle } from "./ui/drawer";
-import { db } from "@/src/lib/prisma";
-import { headers } from "next/headers";
+import { useEffect, useState } from "react";
+import { getLastTaskClient } from "../_actions/get-last-wrapper";
 
-const CreateTaskSummary = async () => {
-    const data = await auth.api.getSession({
-        headers: await headers()
-    })
+type Task = {
+  id: string;
+  title: string;
+  description?: string | null;
+  priority: "alta" | "media" | "baixa";
+  dueDate?: string | null;
+};
 
-    const dbLastTaskCreated = await db.task.findFirst({
-        where: {
-            userId: data?.user.id 
-        },
-        orderBy: {
-            createdAt: "desc"
-        }
-    })
+const CreateTaskSummary = () => {
+  const [lastTask, setTask] = useState<Task | null>(null);
+  useEffect(() => {
+    getLastTaskClient().then(setTask);
+  }, []);
 
-    return ( 
-        
-        <Drawer open>
-            <DrawerContent>
-                <DrawerTitle>
-                    Resumo da Tarefa
-                </DrawerTitle>
-                Título: {dbLastTaskCreated?.title}
-                Descrição: {dbLastTaskCreated?.description}
-                Nível de Prioridade: {dbLastTaskCreated?.priority}
-                Data de vencimento: {dbLastTaskCreated?.dueDate?.getDate()}
-            </DrawerContent>
-        </Drawer>
-     );
-}
- 
+  if (!lastTask) return null;
+
+  return (
+    <div>
+      Título: {lastTask?.title}
+      Descrição: {lastTask?.description}
+      Nível de Prioridade: {lastTask?.priority}
+      Data de vencimento: {lastTask?.dueDate?.getDate()}
+    </div>
+  );
+};
+
 export default CreateTaskSummary;
