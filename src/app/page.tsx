@@ -1,13 +1,12 @@
 import Header from "./_components/header";
 import { Badge } from "./_components/ui/badge";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import CreateTaskDialog from "./_components/create-task-dialog";
 import { auth } from "../lib/auth";
 import { headers } from "next/headers";
 import { getTasks } from "./_actions/getTasks";
 import TaskCard from "./_components/task-card";
+import DateFormat from "./_components/date-format";
 
 
 export default async function Home() {
@@ -25,17 +24,7 @@ export default async function Home() {
           <div className="font-bold">
             Olá, {data?.user ? data.user.name : "Visitante"}!
           </div>
-          <div>
-            <span className="capitalize">
-              {format(new Date(), "EEEE, ", { locale: ptBR })}
-            </span>
-            <span className="">
-              {format(new Date(), "d 'de' ", { locale: ptBR })}
-            </span>
-            <span className="capitalize">
-              {format(new Date(), "MMMM", { locale: ptBR })}
-            </span>
-          </div>
+          <DateFormat date={new Date()}/>
         </div>
         <CreateTaskDialog />
       </div>

@@ -59,6 +59,7 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
       dueDate: data.dueDate,
       priority: data.priority,
     });
+    showSummary()
   };
 
   return (
@@ -160,7 +161,7 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
               variant={"default"}
               type="submit"
               className="w-[50%] cursor-pointer"
-              onClick={showSummary}
+              // onClick={showSummary}
             >
               {form.formState.isSubmitting ? (
                 <>

@@ -59,7 +59,6 @@ const CreateTaskDialog = () => {
             <DrawerTitle>Resumo da Tarefa</DrawerTitle>
           </DrawerHeader>
           <CreateTaskSummary />
-          teste
           <DrawerClose asChild>
             <Button className="w-full">Fechar</Button>
           </DrawerClose>
