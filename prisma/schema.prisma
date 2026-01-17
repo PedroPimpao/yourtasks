@@ -76,6 +76,8 @@ model Task {
   priority    String    @default("media")
   dueDate     DateTime?
   isCompleted Boolean   @default(false)
+  inProcess   Boolean   @default(false)
+  isPending   Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      String
