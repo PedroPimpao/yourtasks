@@ -1,7 +1,17 @@
 import Header from "../../_components/header";
-import { Badge } from "../../_components/ui/badge";
 import { getOneTask } from "../../_actions/getOneTask";
 import { notFound } from "next/navigation";
+// import TaskDetailsCard from "../../_components/task-details-card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../_components/ui/select";
+import { Button } from "../../_components/ui/button";
+import DateFormat from "../../_components/date-format";
+import { Pencil } from "lucide-react";
 
 interface TaskPageProps {
   params: {
@@ -19,16 +29,44 @@ const TaskPage = async ({ params }: TaskPageProps) => {
   }
 
   return (
-    <>
+    <div className="relative min-h-screen">
       <Header />
-      <div className="w-full p-4">
-        <h1 className="border-b-2 p-2 text-2xl font-bold">{task?.title}</h1>
-        <Badge variant={"outline"} className="w-30 font-bold capitalize">
-          {task?.priority}
-        </Badge>
-        <p>Descrição: {task?.description}</p>
+      <div className="m-3">
+        <div className="flex flex-row justify-between border-b pb-3">
+          <h1 className="text-2xl font-bold">{task.title}</h1>
+          <div className="flex flex-row gap-2">
+            <Button size={"icon"} variant={"outline"}>
+              <Pencil />
+            </Button>
+            <Select>
+              <SelectTrigger className="w-30">
+                <SelectValue placeholder="Prioridade" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="baixa">Baixa</SelectItem>
+                <SelectItem value="media">Média</SelectItem>
+                <SelectItem value="alta">Alta</SelectItem>
+                <SelectItem value="urgente">Urgente</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        {/* <TaskDetailsCard task={task}/> */}
+        <div className="border-b p-3">
+          <h2 className="mt-2 font-semibold">Descrição:</h2>
+          <p className="text-justify">{task.description}</p>
+        </div>
+        <div className="border-b p-3">
+          {task.dueDate && <DateFormat date={task.dueDate} />}
+        </div>
       </div>
-    </>
+      <div className="absolute bottom-0 left-0 flex w-full flex-row items-center justify-center gap-2 p-3">
+        <Button variant={"destructive"} className="w-[50%]">
+          Excluir
+        </Button>
+        <Button className="w-[50%]">Iniciar</Button>
+      </div>
+    </div>
   );
 };
 
