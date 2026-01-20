@@ -1,5 +1,6 @@
 "use server"
 import { db } from "@/src/lib/prisma"
+import { revalidatePath } from "next/cache"
 
 interface UpdateTaskProps {
     taskProps: {
@@ -29,5 +30,6 @@ export const updateTask = async ({ taskProps } : UpdateTaskProps) => {
         }).filter(([_,value]) => value !== undefined),
       ),
     });
+    revalidatePath(`/tasks/${taskProps.id}`)
     return updatedTask;
 } 

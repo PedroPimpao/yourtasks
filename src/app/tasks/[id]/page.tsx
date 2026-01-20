@@ -1,7 +1,6 @@
 import Header from "../../_components/header";
 import { getOneTask } from "../../_actions/getOneTask";
 import { notFound } from "next/navigation";
-// import TaskDetailsCard from "../../_components/task-details-card";
 import {
   Select,
   SelectContent,
@@ -11,7 +10,7 @@ import {
 } from "../../_components/ui/select";
 import { Button } from "../../_components/ui/button";
 import DateFormat from "../../_components/date-format";
-import { Pencil } from "lucide-react";
+import UpdateTaskDialog from "../../_components/update-task-dialog";
 
 interface TaskPageProps {
   params: {
@@ -35,9 +34,14 @@ const TaskPage = async ({ params }: TaskPageProps) => {
         <div className="flex flex-row justify-between border-b pb-3">
           <h1 className="text-2xl font-bold">{task.title}</h1>
           <div className="flex flex-row gap-2">
-            <Button size={"icon"} variant={"outline"}>
-              <Pencil />
-            </Button>
+            <UpdateTaskDialog
+              task={{
+                id: task.id,
+                title: task.title,
+                description: task.description || "",
+                dueDate: task.dueDate || new Date(),
+              }}
+            />
             <Select>
               <SelectTrigger className="w-30">
                 <SelectValue placeholder="Prioridade" />
@@ -51,7 +55,6 @@ const TaskPage = async ({ params }: TaskPageProps) => {
             </Select>
           </div>
         </div>
-        {/* <TaskDetailsCard task={task}/> */}
         <div className="border-b p-3">
           <h2 className="mt-2 font-semibold">Descrição:</h2>
           <p className="text-justify">{task.description}</p>

@@ -16,5 +16,8 @@ export const getTasks = async () => {
     where: {
       userId: data.user.id,
     },
+    orderBy: {
+      createdAt: "desc"
+    }
   });
 };
