@@ -1,16 +1,10 @@
 import Header from "../../_components/header";
 import { getOneTask } from "../../_actions/getOneTask";
 import { notFound } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../_components/ui/select";
 import { Button } from "../../_components/ui/button";
 import DateFormat from "../../_components/date-format";
 import UpdateTaskDialog from "../../_components/update-task-dialog";
+import UpdatePrioritySelect from "../../_components/update-priority-select";
 
 interface TaskPageProps {
   params: {
@@ -39,20 +33,10 @@ const TaskPage = async ({ params }: TaskPageProps) => {
                 id: task.id,
                 title: task.title,
                 description: task.description || "",
-                dueDate: task.dueDate || new Date(),
+                dueDate: task?.dueDate || undefined,
               }}
             />
-            <Select>
-              <SelectTrigger className="w-30">
-                <SelectValue placeholder="Prioridade" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="baixa">Baixa</SelectItem>
-                <SelectItem value="media">Média</SelectItem>
-                <SelectItem value="alta">Alta</SelectItem>
-                <SelectItem value="urgente">Urgente</SelectItem>
-              </SelectContent>
-            </Select>
+            <UpdatePrioritySelect taskIDProp={task.id} currentPriority={task.priority}/>
           </div>
         </div>
         <div className="border-b p-3">

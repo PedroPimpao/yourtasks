@@ -23,7 +23,7 @@ interface UpdateTaskFormProps {
   taskID: string;
   task: {
     title?: string;
-    description?: string | "";
+    description?: string;
     dueDate?: Date;
   };
   closeDialog: () => void
@@ -46,8 +46,8 @@ const UpdateTaskForm = ({ taskID, task, closeDialog }: UpdateTaskFormProps) => {
     resolver: zodResolver(taskSchema),
     defaultValues: {
       title: task.title,
-      description: task.description,
-      dueDate: task.dueDate,
+      description: task?.description,
+      dueDate: task?.dueDate,
     },
   });
 

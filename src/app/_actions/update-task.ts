@@ -24,9 +24,9 @@ export const updateTask = async ({ taskProps } : UpdateTaskProps) => {
       data: Object.fromEntries(
         Object.entries({
           title: taskProps.title,
-          description: taskProps.description,
-          priority: taskProps.priority,
-          dueDate: taskProps.dueDate,
+          description: taskProps?.description,
+          priority: taskProps?.priority,
+          dueDate: taskProps?.dueDate,
         }).filter(([_,value]) => value !== undefined),
       ),
     });

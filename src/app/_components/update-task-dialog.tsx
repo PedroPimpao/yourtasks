@@ -15,8 +15,8 @@ interface UpdateTaskProps {
   task: {
     id: string;
     title: string;
-    description: string | "";
-    dueDate: Date;
+    description: string;
+    dueDate?: Date;
   };
 }
 
@@ -41,8 +41,8 @@ const UpdateTaskDialog = ({ task }: UpdateTaskProps) => {
             taskID={task.id}
             task={{
               title: task.title,
-              description: task.description,
-              dueDate: task.dueDate,
+              description: task?.description,
+              dueDate: task?.dueDate,
             }}
             closeDialog={closeDialog}
           />
