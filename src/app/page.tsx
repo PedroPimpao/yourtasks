@@ -7,14 +7,15 @@ import { headers } from "next/headers";
 import { getTasks } from "./_actions/getTasks";
 import TaskCard from "./_components/task-card";
 import DateFormat from "./_components/date-format";
-
+import { getStats } from "./_actions/get-stats";
 
 export default async function Home() {
   const data = await auth.api.getSession({
-    headers: await headers()
-  })
+    headers: await headers(),
+  });
 
-  const tasks = await getTasks()
+  const tasks = await getTasks();
+  const tasksStats = await getStats();
 
   return (
     <>
@@ -24,23 +25,29 @@ export default async function Home() {
           <div className="font-bold">
             Olá, {data?.user ? data.user.name : "Visitante"}!
           </div>
-          <DateFormat date={new Date()}/>
+          <DateFormat date={new Date()} />
         </div>
         <CreateTaskDialog />
       </div>
 
       <div className="flex flex-row items-center justify-around p-4">
         <Badge className="" variant={"outline"}>
-          3 Pendentes
+          {tasksStats.pendingTasks} Pendentes
         </Badge>
-        <Badge>0 Concluídos</Badge>
-        <Badge className="bg-orange-400">0 Em andamento</Badge>
+        <Badge>{tasksStats.tasksCompleted} Concluídos</Badge>
+        <Badge className="bg-orange-400">
+          {tasksStats.tasksInProcess} Em andamento
+        </Badge>
       </div>
 
       {tasks.map((task) => (
         <div key={task.id} className="">
           <Link href={`/tasks/${task.id}`}>
-            <TaskCard key={task.id} taskTitle={task.title} taskPriority={task.priority}/>
+            <TaskCard
+              key={task.id}
+              taskTitle={task.title}
+              taskPriority={task.priority}
+            />
           </Link>
         </div>
       ))}
