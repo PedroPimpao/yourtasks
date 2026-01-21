@@ -1,22 +1,14 @@
 import Header from "../../_components/header";
 import { getOneTask } from "../../_actions/getOneTask";
 import { notFound, redirect } from "next/navigation";
-import { Button } from "../../_components/ui/button";
 import DateFormat from "../../_components/date-format";
 import UpdateTaskDialog from "../../_components/update-task-dialog";
 import UpdatePrioritySelect from "../../_components/update-priority-select";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../_components/ui/dialog";
 import { deleteTask } from "../../_actions/deleteTask";
 import AlertTaskDialog from "../../_components/alert-task-dialog";
 import { revalidatePath } from "next/cache";
+import { startTask } from "../../_actions/start-task";
+import { finishTask } from "../../_actions/finish-task";
 
 interface TaskPageProps {
   params: {
@@ -34,12 +26,28 @@ const TaskPage = async ({ params }: TaskPageProps) => {
   }
 
   const onDelete = async () => {
-    "use server"
+    "use server";
     await deleteTask({
       taskId: task.id,
     });
-    revalidatePath('/')
-    redirect('/')
+    revalidatePath("/");
+    redirect("/");
+  };
+
+  const onStart = async () => {
+    "use server";
+    await startTask({
+      taskID: task.id,
+    });
+    revalidatePath(`/tasks/${task.id}`);
+  };
+
+  const onFinish = async () => {
+    "use server";
+    await finishTask({
+      taskID: task.id,
+    });
+    revalidatePath(`/tasks/${task.id}`);
   };
 
   return (
@@ -79,34 +87,24 @@ const TaskPage = async ({ params }: TaskPageProps) => {
           actionVariant={"destructive"}
           actionFunction={onDelete}
         />
-
-        <Dialog>
-          <DialogTrigger className="" asChild>
-            <Button variant={"default"} className="w-[50%]">
-              Iniciar
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Iniciar tarefa</DialogTitle>
-              <DialogDescription>
-                Deseja mesmo iniciar a tarefa? Esta ação é irreversível
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-row justify-between gap-2">
-              <DialogClose className="" asChild>
-                <Button variant={"outline"} className="w-[50%]">
-                  Cancelar
-                </Button>
-              </DialogClose>
-              <DialogClose className="" asChild>
-                <Button variant={"default"} className="w-[50%]">
-                  Iniciar
-                </Button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
+        {task.isPending && (
+          <AlertTaskDialog
+            dialogTitle="Iniciar tarefa"
+            dialogDescription="Deseja mesmo iniciar a tarefa? Esta ação é irreversível"
+            actionButtonLabel="Iniciar"
+            actionVariant={"default"}
+            actionFunction={onStart}
+          />
+        )}
+        {task.inProcess && (
+          <AlertTaskDialog
+            dialogTitle="Finalizar tarefa"
+            dialogDescription="Deseja mesmo finalizar a tarefa? Esta ação é irreversível"
+            actionButtonLabel="Finalizar"
+            actionVariant={"default"}
+            actionFunction={onFinish}
+          />
+        )}
       </div>
     </div>
   );
