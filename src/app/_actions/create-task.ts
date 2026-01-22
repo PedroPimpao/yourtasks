@@ -1,8 +1,7 @@
 "use server";
-import { auth } from "@/src/lib/auth";
 import { db } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
+import { getServerSession } from "./get-server-session";
 
 interface CreateTaskParams {
   title: string;
@@ -12,9 +11,7 @@ interface CreateTaskParams {
 }
 
 export const createTask = async (params: CreateTaskParams) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getServerSession();
 
   if (!session) {
     throw new Error("Usuário não autenticado");
@@ -29,5 +26,5 @@ export const createTask = async (params: CreateTaskParams) => {
       userId: session.user.id,
     },
   });
-  revalidatePath('/')
+  revalidatePath("/");
 };

@@ -1,13 +1,10 @@
 "use server";
-import { auth } from "@/src/lib/auth";
 import { db } from "@/src/lib/prisma";
-import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { getServerSession } from "./get-server-session";
 
 export const getOneTask = async (taskId: string) => {
-  const data = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const data = await getServerSession();
 
   if (!data?.user) {
     notFound();

@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
+  DialogClose,
   // DialogClose,
   DialogContent,
   DialogHeader,
@@ -19,10 +20,13 @@ import {
 } from "./ui/drawer";
 import CreateTaskSummary from "./create-task-summary";
 import CreateTaskForm from "./create-task-form";
+import { useSession } from "@/src/lib/auth-client";
+import Link from "next/link";
 
 const CreateTaskDialog = () => {
   const [createDialogIsOpen, setCreateDialogIsOpen] = useState(false);
   const [summaryDrawerIsOpen, setSummaryDrawerIsOpen] = useState(false);
+  const { data } = useSession();
 
   const closeForm = () => {
     setCreateDialogIsOpen(false);
@@ -46,10 +50,28 @@ const CreateTaskDialog = () => {
           </Button>
         </DialogTrigger>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Criar tarefa</DialogTitle>
-          </DialogHeader>
-          <CreateTaskForm showSummary={showSummary} />
+          {data?.user ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Criar tarefa</DialogTitle>
+              </DialogHeader>
+              <CreateTaskForm showSummary={showSummary} />
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Antes, faça seu login!</DialogTitle>
+              </DialogHeader>
+              <div className="mt-4 flex w-full flex-row justify-center gap-2">
+                <DialogClose asChild className="flex-1">
+                  <Button variant={"outline"}>Cancelar</Button>
+                </DialogClose>
+                <Link href={`/login`} className="flex-1">
+                  <Button className="w-full">Fazer login</Button>
+                </Link>
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
 

@@ -7,7 +7,7 @@ interface DateFormatProps {
 
 const DateFormat = ({ date } : DateFormatProps) => {
   return (
-    <div>
+    <div className="text-sm">
       <span className="capitalize">
         {format(date, "EEEE, ", { locale: ptBR })}
       </span>

@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { startTask } from "../../_actions/start-task";
 import { finishTask } from "../../_actions/finish-task";
 import { Card } from "../../_components/ui/card";
+import { getServerSession } from "../../_actions/get-server-session";
 
 interface TaskPageProps {
   params: {
@@ -19,10 +20,11 @@ interface TaskPageProps {
 
 const TaskPage = async ({ params }: TaskPageProps) => {
   const { id } = await params;
+  const data = await getServerSession();
 
   const task = await getOneTask(id);
 
-  if (!task) {
+  if (!task || !data?.user) {
     notFound();
   }
 

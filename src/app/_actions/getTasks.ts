@@ -1,12 +1,9 @@
 "use server";
-import { auth } from "@/src/lib/auth";
 import { db } from "@/src/lib/prisma";
-import { headers } from "next/headers";
+import { getServerSession } from "./get-server-session";
 
 export const getTasks = async () => {
-  const data = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const data = await getServerSession();
 
   if (!data?.user) {
     return [];
@@ -17,7 +14,7 @@ export const getTasks = async () => {
       userId: data.user.id,
     },
     orderBy: {
-      createdAt: "desc"
-    }
+      createdAt: "desc",
+    },
   });
 };

@@ -1,4 +1,4 @@
-import { authClient, useSession } from "@/src/lib/auth-client";
+import { useSession } from "@/src/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +9,11 @@ import Image from "next/image";
 import { User } from "lucide-react";
 import ProfileInfoCard from "./profile-info-card";
 import { Button } from "./ui/button";
+import { signOut } from "../_actions/sign-out";
 
 const ProfileInfoTrigger = () => {
   const { data } = useSession();
-  const signOut = async () => {
-    await authClient.signOut();
-  };
+  
   return (
     <>
       <DropdownMenu>

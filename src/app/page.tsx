@@ -1,22 +1,24 @@
 import Header from "./_components/header";
-import { Badge } from "./_components/ui/badge";
 import Link from "next/link";
 import CreateTaskDialog from "./_components/create-task-dialog";
-import { auth } from "../lib/auth";
-import { headers } from "next/headers";
 import { getTasks } from "./_actions/getTasks";
 import TaskCard from "./_components/task-card";
 import DateFormat from "./_components/date-format";
-import { getStats } from "./_actions/get-stats";
 import { fixAllTasksStatus } from "./_actions/fixAllTasksStatus";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "./_components/ui/empty";
+import { FolderCheck } from "lucide-react";
+import { getServerSession } from "./_actions/get-server-session";
+import TasksStats from "./_components/tasksStats";
 
 export default async function Home() {
-  const data = await auth.api.getSession({
-    headers: await headers(),
-  });
-
+  const data = await getServerSession()
   const tasks = await getTasks();
-  const tasksStats = await getStats();
   fixAllTasksStatus();
 
   return (
@@ -29,31 +31,42 @@ export default async function Home() {
           </div>
           <DateFormat date={new Date()} />
         </div>
-        <CreateTaskDialog />
+        {tasks.length > 0 && <CreateTaskDialog />}
       </div>
+      <TasksStats/>
 
-      <div className="flex flex-row items-center justify-around p-4">
-        <Badge className="" variant={"outline"}>
-          {tasksStats.pendingTasks} Pendentes
-        </Badge>
-        <Badge>{tasksStats.tasksCompleted} Concluídos</Badge>
-        <Badge className="bg-orange-400">
-          {tasksStats.tasksInProcess} Em andamento
-        </Badge>
-      </div>
+      <div className="border-b-2"></div>
 
-      {tasks.map((task) => (
-        <div key={task.id} className="">
-          <Link href={`/tasks/${task.id}`}>
-            <TaskCard
-              key={task.id}
-              taskTitle={task.title}
-              taskPriority={task.priority}
-              taskStatus={task.status}
-            />
-          </Link>
+      {tasks.length > 0 ? (
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {tasks.map((task) => (
+            <Link href={`/tasks/${task.id}`} key={task.id}>
+              <TaskCard
+                key={task.id}
+                taskTitle={task.title}
+                taskPriority={task.priority}
+                taskStatus={task.status}
+                taskDueDate={task.dueDate}
+              />
+            </Link>
+          ))}
         </div>
-      ))}
+      ) : (
+        <Empty className="flex items-center justify-center">
+          <EmptyHeader>
+            <EmptyMedia variant={"icon"}>
+              <FolderCheck />
+            </EmptyMedia>
+            <EmptyTitle>Sem tarefas</EmptyTitle>
+            <EmptyDescription>
+              Não há tarefas para exibir. Crie uma!
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyDescription>
+            <CreateTaskDialog/>
+          </EmptyDescription>
+        </Empty>
+      )}
     </>
   );
 }

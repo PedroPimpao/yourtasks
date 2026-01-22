@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <>
-      <Card className="flex flex-row items-center justify-between p-4">
+      <Card className="mt-0 flex flex-row items-center justify-between rounded-t-none p-4">
         <Link href={"/"}>
           <Logo />
         </Link>
