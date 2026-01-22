@@ -9,6 +9,7 @@ import AlertTaskDialog from "../../_components/alert-task-dialog";
 import { revalidatePath } from "next/cache";
 import { startTask } from "../../_actions/start-task";
 import { finishTask } from "../../_actions/finish-task";
+import { Card } from "../../_components/ui/card";
 
 interface TaskPageProps {
   params: {
@@ -65,6 +66,9 @@ const TaskPage = async ({ params }: TaskPageProps) => {
                 dueDate: task?.dueDate || undefined,
               }}
             />
+            <Card className="flex justify-center rounded-md p-1 py-0 pr-3 pl-3 text-sm text-nowrap capitalize">
+              {task.status}
+            </Card>
             <UpdatePrioritySelect
               taskIDProp={task.id}
               currentPriority={task.priority}

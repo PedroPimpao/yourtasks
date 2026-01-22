@@ -8,6 +8,7 @@ import { getTasks } from "./_actions/getTasks";
 import TaskCard from "./_components/task-card";
 import DateFormat from "./_components/date-format";
 import { getStats } from "./_actions/get-stats";
+import { fixAllTasksStatus } from "./_actions/fixAllTasksStatus";
 
 export default async function Home() {
   const data = await auth.api.getSession({
@@ -16,6 +17,7 @@ export default async function Home() {
 
   const tasks = await getTasks();
   const tasksStats = await getStats();
+  fixAllTasksStatus();
 
   return (
     <>
@@ -47,6 +49,7 @@ export default async function Home() {
               key={task.id}
               taskTitle={task.title}
               taskPriority={task.priority}
+              taskStatus={task.status}
             />
           </Link>
         </div>

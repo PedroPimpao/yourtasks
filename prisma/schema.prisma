@@ -78,6 +78,7 @@ model Task {
   isCompleted Boolean   @default(false)
   inProcess   Boolean   @default(false)
   isPending   Boolean   @default(true)
+  status      String    @default("pendente")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      String
