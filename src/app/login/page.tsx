@@ -1,12 +1,12 @@
-"use client"
 import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
 import { LoginForm } from "./_components/login-form";
-import { useSession } from "@/src/lib/auth-client";
 import { redirect } from "next/navigation";
+import { getServerSession } from "../_actions/get-server-session";
 
-const Login = () => {
-  const { data } = useSession();
+const Login = async () => {
+  const data = await getServerSession()
+  
   if (data?.user) {
     redirect("/");
   }

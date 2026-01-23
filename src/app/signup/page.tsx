@@ -1,15 +1,16 @@
-"use client"
 import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
 import { SignUpForm } from "./_components/signup-form";
-import { useSession } from "@/src/lib/auth-client";
 import { redirect } from "next/navigation";
+import { getServerSession } from "../_actions/get-server-session";
 
-const SignUp = () => {
-  const { data } = useSession();
+const SignUp = async () => {
+  const data = await getServerSession()
+
   if (data?.user) {
     redirect("/");
   }
+  
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">

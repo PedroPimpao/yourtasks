@@ -4,7 +4,6 @@ import CreateTaskDialog from "./_components/create-task-dialog";
 import { getTasks } from "./_actions/getTasks";
 import TaskCard from "./_components/task-card";
 import DateFormat from "./_components/date-format";
-import { fixAllTasksStatus } from "./_actions/fixAllTasksStatus";
 import {
   Empty,
   EmptyDescription,
@@ -19,11 +18,10 @@ import TasksStats from "./_components/tasksStats";
 export default async function Home() {
   const data = await getServerSession()
   const tasks = await getTasks();
-  fixAllTasksStatus();
 
   return (
     <>
-      <Header />
+      <Header session={data}/>
       <div className="flex flex-row items-center justify-between p-4">
         <div className="flex flex-col">
           <div className="font-bold">

@@ -1,11 +1,18 @@
-import { useSession } from "@/src/lib/auth-client";
+// import { useSession } from "@/src/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Image from "next/image";
 import { User } from "lucide-react";
 
-const ProfileInfoCard = () => {
-  const { data } = useSession();
+interface ProfileInfoCardProps {
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+}
 
+const ProfileInfoCard = ({ user } : ProfileInfoCardProps) => {
+  // const { data } = useSession();
   return (
     <>
       <div className="flex flex-col items-center justify-center">
@@ -13,9 +20,9 @@ const ProfileInfoCard = () => {
           <Avatar>
             <AvatarImage />
             <AvatarFallback>
-              {data?.user?.image ? (
+              {user.image ? (
                 <Image
-                  src={data?.user?.image ?? ""}
+                  src={user.image}
                   alt="User Image"
                   width={40}
                   height={40}
@@ -26,8 +33,8 @@ const ProfileInfoCard = () => {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="font-bold">{data?.user?.name}</h2>
-            <p className="text-muted-foreground text-sm">{data?.user?.email}</p>
+            <h2 className="font-bold">{user.name}</h2>
+            <p className="text-muted-foreground text-sm">{user.email}</p>
           </div>
         </div>
       </div>
