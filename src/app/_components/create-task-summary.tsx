@@ -13,7 +13,7 @@ const CreateTaskSummary = () => {
   if (!lastTask) return null;
 
   return (
-    <TaskDetailsCard task={lastTask}/>
+      <TaskDetailsCard task={lastTask} />
   );
 };
 

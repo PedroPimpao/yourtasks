@@ -14,29 +14,31 @@ import {
 import { FolderCheck } from "lucide-react";
 import { getServerSession } from "./_actions/get-server-session";
 import TasksStats from "./_components/tasksStats";
+import { Separator } from "./_components/ui/separator";
 
 export default async function Home() {
-  const data = await getServerSession()
+  const data = await getServerSession();
   const tasks = await getTasks();
+  const currentDate = new Date();
 
   return (
     <>
-      <Header session={data}/>
+      <Header session={data} />
       <div className="flex flex-row items-center justify-between p-4">
         <div className="flex flex-col">
           <div className="font-bold">
             Olá, {data?.user ? data.user.name : "Visitante"}!
           </div>
-          <DateFormat date={new Date()} />
+          <DateFormat date={currentDate} />
         </div>
         {tasks.length > 0 && <CreateTaskDialog />}
       </div>
-      <TasksStats/>
+      <TasksStats />
 
-      <div className="border-b-2"></div>
+      <Separator/>
 
       {tasks.length > 0 ? (
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {tasks.map((task) => (
             <Link href={`/tasks/${task.id}`} key={task.id}>
               <TaskCard
@@ -61,7 +63,7 @@ export default async function Home() {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyDescription>
-            <CreateTaskDialog/>
+            <CreateTaskDialog />
           </EmptyDescription>
         </Empty>
       )}

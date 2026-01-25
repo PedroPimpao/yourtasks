@@ -1,4 +1,3 @@
-// import { useSession } from "@/src/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,12 +5,13 @@ import {
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Image from "next/image";
-import { User } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import ProfileInfoCard from "./profile-info-card";
 import { Button } from "./ui/button";
 import { signOut } from "../_actions/sign-out";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface ProfileInfoTriggerProps {
   user: {
@@ -21,21 +21,19 @@ interface ProfileInfoTriggerProps {
   };
 }
 
-const ProfileInfoTrigger = ({ user } : ProfileInfoTriggerProps) => {
+const ProfileInfoTrigger = ({ user }: ProfileInfoTriggerProps) => {
   const [dropDownOpen, setDropDownIsOpen] = useState(false);
-  // const { data } = useSession();
-  const router = useRouter()
+  const router = useRouter();
 
   const closeDropDown = () => {
     setDropDownIsOpen(false);
   };
 
   const onSignOut = async () => {
-    await signOut()
-    closeDropDown()
-    router.refresh()
+    await signOut();
+    closeDropDown();
+    router.refresh();
   };
-
 
   return (
     <DropdownMenu open={dropDownOpen} onOpenChange={setDropDownIsOpen}>
@@ -44,12 +42,7 @@ const ProfileInfoTrigger = ({ user } : ProfileInfoTriggerProps) => {
           <AvatarImage />
           <AvatarFallback>
             {user.image ? (
-              <Image
-                src={user.image}
-                alt="User Image"
-                width={40}
-                height={40}
-              />
+              <Image src={user.image} alt="User Image" width={40} height={40} />
             ) : (
               <User />
             )}
@@ -57,11 +50,17 @@ const ProfileInfoTrigger = ({ user } : ProfileInfoTriggerProps) => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-3 flex flex-col gap-3 p-4">
-        <ProfileInfoCard user={user}/>
-        <Button variant={"outline"} className="cursor-pointer">
-          Configurações
+        <ProfileInfoCard user={user} />
+        <Link href={"/settings"}>
+          <Button variant={"outline"} className="cursor-pointer w-full">
+            <Settings/>
+            Configurações
+          </Button>
+        </Link>
+        <Button className="cursor-pointer" onClick={onSignOut}>
+          <LogOut/>
+          Sair da conta
         </Button>
-        <Button className="cursor-pointer" onClick={onSignOut}>Sair da conta</Button>
       </DropdownMenuContent>
     </DropdownMenu>
   );

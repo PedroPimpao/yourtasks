@@ -75,15 +75,21 @@ const CreateTaskDialog = () => {
         </DialogContent>
       </Dialog>
 
-      <Drawer open={summaryDrawerIsOpen} onOpenChange={setSummaryDrawerIsOpen}>
+      <Drawer
+        open={summaryDrawerIsOpen}
+        onOpenChange={setSummaryDrawerIsOpen}
+        direction="right"
+      >
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Resumo da Tarefa</DrawerTitle>
           </DrawerHeader>
-          <CreateTaskSummary />
-          <DrawerClose asChild>
-            <Button className="w-full">Fechar</Button>
-          </DrawerClose>
+            <CreateTaskSummary />
+          <div className="flex justify-center pr-4 pl-4">
+            <DrawerClose asChild className="">
+              <Button className="w-full">Fechar</Button>
+            </DrawerClose>
+          </div>
         </DrawerContent>
       </Drawer>
     </>
