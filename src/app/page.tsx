@@ -1,7 +1,7 @@
 import Header from "./_components/header";
 import Link from "next/link";
 import CreateTaskDialog from "./_components/create-task-dialog";
-import { getTasks } from "./_actions/getTasks";
+import { getTasks } from "./_actions/_crud/getTasks";
 import TaskCard from "./_components/task-card";
 import DateFormat from "./_components/date-format";
 import {
@@ -12,7 +12,7 @@ import {
   EmptyTitle,
 } from "./_components/ui/empty";
 import { FolderCheck } from "lucide-react";
-import { getServerSession } from "./_actions/get-server-session";
+import { getServerSession } from "./_actions/_auth/get-server-session";
 import TasksStats from "./_components/tasksStats";
 import { Separator } from "./_components/ui/separator";
 
@@ -35,7 +35,7 @@ export default async function Home() {
       </div>
       <TasksStats />
 
-      <Separator/>
+      <Separator />
 
       {tasks.length > 0 ? (
         <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
