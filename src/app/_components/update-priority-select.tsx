@@ -1,8 +1,9 @@
 "use client"
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { updatePriority } from "../_actions/update-task-priority";
+import { updatePriority } from "../_actions/_crud/update-task-priority";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import {
   Select,

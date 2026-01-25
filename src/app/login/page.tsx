@@ -2,11 +2,11 @@ import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
 import { LoginForm } from "./_components/login-form";
 import { redirect } from "next/navigation";
-import { getServerSession } from "../_actions/get-server-session";
+import { getServerSession } from "../_actions/_auth/get-server-session";
 
 const Login = async () => {
-  const data = await getServerSession()
-  
+  const data = await getServerSession();
+
   if (data?.user) {
     redirect("/");
   }

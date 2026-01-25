@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-// import { Card } from "./ui/card";
 import { Github } from "lucide-react";
 import { Button } from "./ui/button";
 import { authClient } from "@/src/lib/auth-client";

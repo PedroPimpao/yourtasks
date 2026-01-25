@@ -8,7 +8,7 @@ import Image from "next/image";
 import { LogOut, Settings, User } from "lucide-react";
 import ProfileInfoCard from "./profile-info-card";
 import { Button } from "./ui/button";
-import { signOut } from "../_actions/sign-out";
+import { signOut } from "../_actions/_auth/sign-out";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

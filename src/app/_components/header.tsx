@@ -7,7 +7,7 @@ import Link from "next/link";
 import ProfileInfoTrigger from "./profile-info-trigger";
 
 interface HeaderProps {
-  session: {
+  session?: {
     user?: {
       name?: string | null;
       email?: string | null;
@@ -17,7 +17,6 @@ interface HeaderProps {
 }
 
 const Header = ({ session } : HeaderProps) => {
-  // const { data } = useSession();
 
   return (
     <>

@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/src/lib/prisma";
 import { notFound } from "next/navigation";
-import { getServerSession } from "./get-server-session";
+import { getServerSession } from "../_auth/get-server-session";
 
 export const getOneTask = async (taskId: string) => {
   const data = await getServerSession();

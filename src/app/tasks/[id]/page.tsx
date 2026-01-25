@@ -1,16 +1,16 @@
 import Header from "../../_components/header";
-import { getOneTask } from "../../_actions/getOneTask";
+import { getOneTask } from "../../_actions/_crud/getOneTask";
 import { notFound, redirect } from "next/navigation";
 import DateFormat from "../../_components/date-format";
 import UpdateTaskDialog from "../../_components/update-task-dialog";
 import UpdatePrioritySelect from "../../_components/update-priority-select";
-import { deleteTask } from "../../_actions/deleteTask";
+import { deleteTask } from "../../_actions/_crud/deleteTask";
 import AlertTaskDialog from "../../_components/alert-task-dialog";
 import { revalidatePath } from "next/cache";
-import { startTask } from "../../_actions/start-task";
-import { finishTask } from "../../_actions/finish-task";
+import { startTask } from "../../_actions/change_task_status/start-task";
+import { finishTask } from "../../_actions/change_task_status/finish-task";
 import { Card } from "../../_components/ui/card";
-import { getServerSession } from "../../_actions/get-server-session";
+import { getServerSession } from "../../_actions/_auth/get-server-session";
 
 interface TaskPageProps {
   params: {
@@ -55,7 +55,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
 
   return (
     <div className="relative min-h-screen">
-      <Header />
+      <Header session={data} />
       <div className="m-3">
         <div className="flex flex-row justify-between border-b pb-3">
           <h1 className="text-2xl font-bold">{task.title}</h1>

@@ -1,13 +1,13 @@
 "use server";
 
 import { db } from "@/src/lib/prisma";
-import { getServerSession } from "./get-server-session";
+import { getServerSession } from "../_auth/get-server-session";
 
 export const getStats = async () => {
-  const data = await getServerSession()
+  const data = await getServerSession();
 
-  if(!data?.user){
-    return
+  if (!data?.user) {
+    return;
   }
 
   const pendingTasks = await db.task.count({

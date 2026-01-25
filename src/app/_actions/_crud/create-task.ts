@@ -1,7 +1,8 @@
 "use server";
+
 import { db } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { getServerSession } from "./get-server-session";
+import { getServerSession } from "../_auth/get-server-session";
 
 interface CreateTaskParams {
   title: string;

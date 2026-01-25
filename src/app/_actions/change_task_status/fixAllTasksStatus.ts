@@ -1,6 +1,6 @@
 "use server";
 
-import { getTasks } from "./getTasks";
+import { getTasks } from "../_crud/getTasks";
 import { updateToIsPending } from "./update-to-pending";
 import { updateToInProcess } from "./update-to-in-process";
 import { updateToCompleted } from "./updateToCompleted";

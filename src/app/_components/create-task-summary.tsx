@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getLastTaskClient } from "../_actions/get-last-wrapper";
+import { getLastTaskClient } from "../_actions/_crud/get-last-wrapper";
 import { Task } from "@prisma/client";
 import TaskDetailsCard from "./task-details-card";
 

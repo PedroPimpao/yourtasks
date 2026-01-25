@@ -1,4 +1,3 @@
-// import { useSession } from "@/src/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Image from "next/image";
 import { User } from "lucide-react";

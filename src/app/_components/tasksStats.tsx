@@ -1,4 +1,4 @@
-import { getStats } from "../_actions/get-stats";
+import { getStats } from "../_actions/_crud/get-stats";
 import { Badge } from "./ui/badge";
 
 const TasksStats = async () => {

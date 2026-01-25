@@ -17,7 +17,7 @@ import { ptBR } from "date-fns/locale";
 import { DialogClose } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
-import { updateTask } from "../_actions/update-task";
+import { updateTask } from "../_actions/_crud/update-task";
 
 interface UpdateTaskFormProps {
   taskID: string;

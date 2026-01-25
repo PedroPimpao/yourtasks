@@ -2,15 +2,15 @@ import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
 import { SignUpForm } from "./_components/signup-form";
 import { redirect } from "next/navigation";
-import { getServerSession } from "../_actions/get-server-session";
+import { getServerSession } from "../_actions/_auth/get-server-session";
 
 const SignUp = async () => {
-  const data = await getServerSession()
+  const data = await getServerSession();
 
   if (data?.user) {
     redirect("/");
   }
-  
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
