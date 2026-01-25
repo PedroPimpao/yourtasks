@@ -1,9 +1,7 @@
 "use server";
 
 import { getTasks } from "../_crud/getTasks";
-import { updateToIsPending } from "./update-to-pending";
-import { updateToInProcess } from "./update-to-in-process";
-import { updateToCompleted } from "./updateToCompleted";
+import { updateToCompleted, updateToInProcess, updateToIsPending } from "./update-status";
 
 export const fixAllTasksStatus = async () => {
   const allTasks = await getTasks();
