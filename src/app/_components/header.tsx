@@ -1,8 +1,8 @@
 "use client";
+
 import Logo from "./logo";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-// import { useSession } from "@/src/lib/auth-client";
 import Link from "next/link";
 import ProfileInfoTrigger from "./profile-info-trigger";
 

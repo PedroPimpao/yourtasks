@@ -20,13 +20,21 @@ import {
 } from "./ui/drawer";
 import CreateTaskSummary from "./create-task-summary";
 import CreateTaskForm from "./create-task-form";
-import { useSession } from "@/src/lib/auth-client";
 import Link from "next/link";
 
-const CreateTaskDialog = () => {
+interface CreateTaskDialogProps {
+  session?: {
+    user?: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  } | null;
+}
+
+const CreateTaskDialog = ({ session } : CreateTaskDialogProps) => {
   const [createDialogIsOpen, setCreateDialogIsOpen] = useState(false);
   const [summaryDrawerIsOpen, setSummaryDrawerIsOpen] = useState(false);
-  const { data } = useSession();
 
   const closeForm = () => {
     setCreateDialogIsOpen(false);
@@ -50,7 +58,7 @@ const CreateTaskDialog = () => {
           </Button>
         </DialogTrigger>
         <DialogContent>
-          {data?.user ? (
+          {session?.user ? (
             <>
               <DialogHeader>
                 <DialogTitle>Criar tarefa</DialogTitle>

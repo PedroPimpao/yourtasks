@@ -23,7 +23,7 @@ export default async function Home() {
 
   return (
     <>
-      <Header session={data} />
+      <Header session={data}/>
       <div className="flex flex-row items-center justify-between p-4">
         <div className="flex flex-col">
           <div className="font-bold">
@@ -63,7 +63,7 @@ export default async function Home() {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyDescription>
-            <CreateTaskDialog />
+            <CreateTaskDialog session={data}/>
           </EmptyDescription>
         </Empty>
       )}
