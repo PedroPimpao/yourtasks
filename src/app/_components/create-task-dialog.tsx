@@ -19,7 +19,7 @@ import {
   DrawerTitle,
 } from "./ui/drawer";
 import CreateTaskSummary from "./create-task-summary";
-import CreateTaskForm from "./create-task-form";
+import CreateTaskForm from "./forms/create-task-form";
 import Link from "next/link";
 
 interface CreateTaskDialogProps {
@@ -32,7 +32,7 @@ interface CreateTaskDialogProps {
   } | null;
 }
 
-const CreateTaskDialog = ({ session } : CreateTaskDialogProps) => {
+const CreateTaskDialog = ({ session }: CreateTaskDialogProps) => {
   const [createDialogIsOpen, setCreateDialogIsOpen] = useState(false);
   const [summaryDrawerIsOpen, setSummaryDrawerIsOpen] = useState(false);
 
@@ -92,7 +92,7 @@ const CreateTaskDialog = ({ session } : CreateTaskDialogProps) => {
           <DrawerHeader>
             <DrawerTitle>Resumo da Tarefa</DrawerTitle>
           </DrawerHeader>
-            <CreateTaskSummary />
+          <CreateTaskSummary />
           <div className="flex justify-center pr-4 pl-4">
             <DrawerClose asChild className="">
               <Button className="w-full">Fechar</Button>

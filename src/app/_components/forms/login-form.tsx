@@ -8,11 +8,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../_components/ui/form";
+} from "../ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../../_components/ui/input";
-import { Button } from "../../_components/ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { signInClient } from "../../_actions/_auth/sign-in-client";
@@ -39,8 +39,8 @@ export function LoginForm() {
   const onSubmit = async (formData: LoginFormValues) => {
     await signInClient({
       email: formData.email,
-      password: formData.password
-    })
+      password: formData.password,
+    });
   };
 
   return (

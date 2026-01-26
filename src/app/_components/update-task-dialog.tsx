@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Pencil } from "lucide-react";
 import { Button } from "./ui/button";
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import UpdateTaskForm from "./update-task-form";
+import UpdateTaskForm from "./forms/update-task-form";
 import { useState } from "react";
 
 interface UpdateTaskProps {
@@ -24,8 +24,8 @@ interface UpdateTaskProps {
 const UpdateTaskDialog = ({ task }: UpdateTaskProps) => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const closeDialog = () => {
-    setDialogIsOpen(false)
-  }
+    setDialogIsOpen(false);
+  };
   return (
     <>
       <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>

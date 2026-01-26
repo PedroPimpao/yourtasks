@@ -1,7 +1,7 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { createTask } from "../_actions/_crud/create-task";
 import {
   Form,
   FormControl,
@@ -9,35 +9,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { RadioGroup } from "./ui/radio-group";
-import RadioItem from "./radio-item";
-import { Calendar } from "./ui/calendar";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Calendar } from "../ui/calendar";
 import { ptBR } from "date-fns/locale";
-import { DialogClose } from "./ui/dialog";
-import { Button } from "./ui/button";
+import { DialogClose } from "../ui/dialog";
+import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
+import { updateTask } from "../../_actions/_crud/update-task";
 
-interface CreateTaskFormProps {
-  showSummary: () => void;
+interface UpdateTaskFormProps {
+  taskID: string;
+  task: {
+    title?: string;
+    description?: string;
+    dueDate?: Date;
+  };
+  closeDialog: () => void;
 }
 
-const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
+const UpdateTaskForm = ({ taskID, task, closeDialog }: UpdateTaskFormProps) => {
   const taskSchema = z.object({
-    title: z
-      .string()
-      .min(3, { message: "O título deve ter no mínimo 3 caracteres" }),
+    title: z.string().optional(),
     description: z.string().optional(),
     dueDate: z
       .date({
         message: "Data de vencimento inválida",
       })
       .optional(),
-    priority: z.enum(["alta", "media", "baixa", "urgente"], {
-      message: "Prioridade inválida",
-    }),
   });
 
   type TaskFormValues = z.infer<typeof taskSchema>;
@@ -45,21 +45,22 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      dueDate: undefined,
-      priority: "media",
+      title: task.title,
+      description: task?.description,
+      dueDate: task?.dueDate,
     },
   });
 
   const onSubmit = async (data: TaskFormValues) => {
-    await createTask({
-      title: data.title,
-      description: data.description,
-      dueDate: data.dueDate,
-      priority: data.priority,
+    await updateTask({
+      taskProps: {
+        id: taskID,
+        title: data.title,
+        description: data.description,
+        dueDate: data.dueDate,
+      },
     });
-    showSummary()
+    closeDialog();
   };
 
   return (
@@ -101,28 +102,6 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
           <div className="flex flex-col items-center justify-around gap-4">
             <FormField
               control={form.control}
-              name="priority"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="">Prioridade</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      className="ml-4 flex flex-row justify-around"
-                      {...field}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <RadioItem id="r1" value="baixa" label="Baixa" />
-                      <RadioItem id="r2" value="media" label="Média" />
-                      <RadioItem id="r3" value="alta" label="Alta" />
-                      <RadioItem id="r4" value="urgente" label="Urgente" />
-                    </RadioGroup>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="dueDate"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -161,15 +140,14 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
               variant={"default"}
               type="submit"
               className="w-[50%] cursor-pointer"
-              // onClick={showSummary}
             >
               {form.formState.isSubmitting ? (
                 <>
                   <Loader2 />
-                  Criando...
+                  Atualizando...
                 </>
               ) : (
-                "Criar"
+                "Atualizar"
               )}
             </Button>
           </div>
@@ -179,4 +157,4 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
   );
 };
 
-export default CreateTaskForm;
+export default UpdateTaskForm;

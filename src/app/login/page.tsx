@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
-import { LoginForm } from "./_components/login-form";
+import { LoginForm } from "../_components/forms/login-form";
 import { redirect } from "next/navigation";
 import { getServerSession } from "../_actions/_auth/get-server-session";
 
