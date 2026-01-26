@@ -31,7 +31,7 @@ export default async function Home() {
           </div>
           <DateFormat date={currentDate} />
         </div>
-        {tasks.length > 0 && <CreateTaskDialog />}
+        {tasks.length > 0 && <CreateTaskDialog session={data} />}
       </div>
       <TasksStats />
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { authClient } from "@/src/lib/auth-client";
 import z from "zod";
 import {
   Form,
@@ -13,10 +12,10 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../_components/ui/input";
-import { useRouter } from "next/navigation";
 import { Button } from "../../_components/ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { signUpClient } from "../../_actions/_auth/sign-up-client";
 const signupSchema = z
   .object({
     name: z
@@ -41,7 +40,6 @@ export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const router = useRouter();
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -53,23 +51,11 @@ export function SignUpForm() {
   });
 
   const onSubmit = async (formData: SignUpFormValues) => {
-    const {} = await authClient.signUp.email(
-      {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        callbackURL: "/",
-      },
-      {
-        onSuccess: (ctx) => {
-          console.log(`CADASTRADO: ${ctx.data}`);
-          router.replace("/");
-        },
-        onError: (err) => {
-          console.log(`ERRO: ${err.error}`);
-        },
-      },
-    );
+    await signUpClient({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password
+    })
   };
 
   return (
