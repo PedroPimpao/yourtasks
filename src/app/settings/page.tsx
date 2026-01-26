@@ -1,10 +1,22 @@
-import { ChevronLeft, KeyRound, Mail, SunMoon } from "lucide-react";
+"use client"
+
+import { ChevronLeft, FolderPen, KeyRound, Mail, SunMoon } from "lucide-react";
 import { Button } from "../_components/ui/button";
 import Link from "next/link";
 import SettingActionItem from "../_components/setting-action-item";
 import { ThemeSelect } from "../_components/theme-select";
+import { verifyEmail } from "../_actions/_auth/verify-email";
+import { getServerSession } from "../_actions/_auth/get-server-session";
+import UpdateUsernameDialog from "../_components/update-username-dialog";
 
 const SettingsPage = () => {
+  const onVerify = async () => {
+    const data = await getServerSession();
+    if (data?.user) {
+      await verifyEmail(data.user.email);
+    }
+  };
+
   return (
     <>
       <div className="relative flex w-full items-center justify-center border-b p-4">
@@ -21,10 +33,10 @@ const SettingsPage = () => {
       </div>
       <div className="mr-5 ml-5 grid grid-cols-1 content-center gap-5 object-center p-4 md:grid-cols-2">
         <SettingActionItem
-          title="Redefinir email"
-          description="Você pode trocar o endereço de email cadastrado"
-          icon={<Mail />}
-          action={<Button variant={"outline"}>Redefinir</Button>}
+          title="Redefinir nome de usuário"
+          description="Você pode trocar o seu nome de usuário"
+          icon={<FolderPen/>}
+          action={<UpdateUsernameDialog/>}
         />
 
         <SettingActionItem
@@ -38,7 +50,11 @@ const SettingsPage = () => {
           title="Verificação de email (Recomendado)"
           description="Conclua está ação para garantir que tem acesso ao email cadastrado"
           icon={<Mail />}
-          action={<Button variant={"outline"}>Verificar</Button>}
+          action={
+            <Button variant={"outline"} onClick={onVerify}>
+              Verificar
+            </Button>
+          }
         />
 
         <SettingActionItem

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SocialAuthOptions from "../_components/social-auth-options";
-import { SignUpForm } from "./_components/signup-form";
+import { SignUpForm } from "../_components/forms/signup-form";
 import { redirect } from "next/navigation";
 import { getServerSession } from "../_actions/_auth/get-server-session";
 
