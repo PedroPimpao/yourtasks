@@ -1,10 +1,10 @@
 "use client";
+
 import { Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
   DialogClose,
-  // DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -23,16 +23,14 @@ import CreateTaskForm from "./forms/create-task-form";
 import Link from "next/link";
 
 interface CreateTaskDialogProps {
-  session?: {
-    user?: {
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
   } | null;
 }
 
-const CreateTaskDialog = ({ session }: CreateTaskDialogProps) => {
+const CreateTaskDialog = ({ user }: CreateTaskDialogProps) => {
   const [createDialogIsOpen, setCreateDialogIsOpen] = useState(false);
   const [summaryDrawerIsOpen, setSummaryDrawerIsOpen] = useState(false);
 
@@ -58,7 +56,7 @@ const CreateTaskDialog = ({ session }: CreateTaskDialogProps) => {
           </Button>
         </DialogTrigger>
         <DialogContent>
-          {session?.user ? (
+          {user ? (
             <>
               <DialogHeader>
                 <DialogTitle>Criar tarefa</DialogTitle>

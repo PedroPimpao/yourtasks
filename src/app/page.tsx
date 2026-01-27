@@ -15,23 +15,24 @@ import { FolderCheck } from "lucide-react";
 import { getServerSession } from "./_actions/_auth/get-server-session";
 import TasksStats from "./_components/tasksStats";
 import { Separator } from "./_components/ui/separator";
+import { getUser } from "./_actions/_auth/get-user";
 
 export default async function Home() {
   const data = await getServerSession();
+  const user = await getUser({ userID: data?.user.id });
   const tasks = await getTasks();
   const currentDate = new Date();
-
   return (
     <>
-      <Header session={data}/>
+      <Header user={user} />
       <div className="flex flex-row items-center justify-between p-4">
         <div className="flex flex-col">
           <div className="font-bold">
-            Olá, {data?.user ? data.user.name : "Visitante"}!
+            Olá, {user ? user.name : "Visitante"}!
           </div>
           <DateFormat date={currentDate} />
         </div>
-        {tasks.length > 0 && <CreateTaskDialog session={data} />}
+        {tasks.length > 0 && <CreateTaskDialog user={user} />}
       </div>
       <TasksStats />
 
@@ -63,7 +64,7 @@ export default async function Home() {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyDescription>
-            <CreateTaskDialog session={data}/>
+            <CreateTaskDialog user={user} />
           </EmptyDescription>
         </Empty>
       )}

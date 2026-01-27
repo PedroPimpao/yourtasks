@@ -7,25 +7,22 @@ import Link from "next/link";
 import ProfileInfoTrigger from "./profile-info-trigger";
 
 interface HeaderProps {
-  session?: {
-    user?: {
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
   } | null;
 }
 
-const Header = ({ session } : HeaderProps) => {
-
+const Header = ({ user }: HeaderProps) => {
   return (
     <>
       <Card className="mt-0 flex flex-row items-center justify-between rounded-t-none p-4">
         <Link href={"/"}>
           <Logo />
         </Link>
-        {session?.user ? (
-          <ProfileInfoTrigger user={session.user}/>
+        {user ? (
+          <ProfileInfoTrigger user={user} />
         ) : (
           <Link href={"/login"}>
             <Button className="cursor-pointer">Entrar</Button>

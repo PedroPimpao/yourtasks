@@ -10,8 +10,7 @@ interface ProfileInfoCardProps {
   };
 }
 
-const ProfileInfoCard = ({ user } : ProfileInfoCardProps) => {
-  // const { data } = useSession();
+const ProfileInfoCard = ({ user }: ProfileInfoCardProps) => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">

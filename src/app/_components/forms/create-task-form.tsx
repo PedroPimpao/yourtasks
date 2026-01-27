@@ -161,7 +161,6 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
               variant={"default"}
               type="submit"
               className="w-[50%] cursor-pointer"
-              // onClick={showSummary}
             >
               {form.formState.isSubmitting ? (
                 <>

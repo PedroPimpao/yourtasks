@@ -52,13 +52,13 @@ const ProfileInfoTrigger = ({ user }: ProfileInfoTriggerProps) => {
       <DropdownMenuContent className="mr-3 flex flex-col gap-3 p-4">
         <ProfileInfoCard user={user} />
         <Link href={"/settings"}>
-          <Button variant={"outline"} className="cursor-pointer w-full">
-            <Settings/>
+          <Button variant={"outline"} className="w-full cursor-pointer">
+            <Settings />
             Configurações
           </Button>
         </Link>
         <Button className="cursor-pointer" onClick={onSignOut}>
-          <LogOut/>
+          <LogOut />
           Sair da conta
         </Button>
       </DropdownMenuContent>
