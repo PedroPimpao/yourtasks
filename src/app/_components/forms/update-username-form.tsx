@@ -15,6 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { getServerSession } from "../../_actions/_auth/get-server-session";
+import { Loader2 } from "lucide-react";
 
 const updateUsernameSchema = z.object({
   newUsername: z.string().min(3, { message: "Mínimo de 3 caracteres" }),
@@ -75,7 +76,14 @@ export const UpdateUsernameForm = ({
               Cancelar
             </Button>
             <Button type="submit" className="flex-1">
-              Confirmar
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 />
+                  Atualizando
+                </>
+              ) : (
+                "Atualizar"
+              )}
             </Button>
           </div>
         </form>

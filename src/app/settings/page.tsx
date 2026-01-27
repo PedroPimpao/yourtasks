@@ -8,6 +8,7 @@ import { ThemeSelect } from "../_components/theme-select";
 import { verifyEmail } from "../_actions/_auth/verify-email";
 import { getServerSession } from "../_actions/_auth/get-server-session";
 import UpdateUsernameDialog from "../_components/update-username-dialog";
+import { UpdatePasswordDialog } from "../_components/update-password-dialog";
 
 const SettingsPage = () => {
   const onVerify = async () => {
@@ -43,7 +44,7 @@ const SettingsPage = () => {
           title="Redefinir senha"
           description="Você pode redefinir a senha do perfil"
           icon={<KeyRound />}
-          action={<Button variant={"outline"}>Redefinir</Button>}
+          action={<UpdatePasswordDialog/>}
         />
 
         <SettingActionItem
