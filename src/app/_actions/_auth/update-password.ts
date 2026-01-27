@@ -1,6 +1,8 @@
 "use server";
 
-import { authClient } from "@/src/lib/auth-client";
+import { auth } from "@/src/lib/auth";
+import { headers } from "next/headers";
+import { getServerSession } from "./get-server-session";
 
 interface UpdatePasswordProps {
   currentPassword: string;
@@ -14,14 +16,31 @@ export const updatePassword = async ({
   confirmNewPassword,
 }: UpdatePasswordProps) => {
   try {
-    if (newPassword === confirmNewPassword) {
-      await authClient.changePassword({
-        currentPassword,
-        newPassword,
-      });
-    } else {
-      console.log("As senhas não coincidem");
+    const session = await getServerSession()
+
+    if (!session?.user) {
+      return {
+        success: false,
+        message: `Usuário não autenticado`,
+      };
     }
+
+    if (newPassword !== confirmNewPassword) {
+      return {
+        success: false,
+        message: "As senhas não coincidem",
+      };
+    }
+
+    await auth.api.changePassword({
+      body: {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        revokeOtherSessions: false,
+      },
+      headers: await headers(),
+    });
+
     return {
       success: true,
       message: "Senha atualizada com sucesso!",

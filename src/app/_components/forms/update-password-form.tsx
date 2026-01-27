@@ -46,12 +46,22 @@ export const UpdatePasswordForm = ({
   });
 
   const onSubmit = async (formData: UpdatePasswordFormValues) => {
-    await updatePassword({
+    const updatedPassword = await updatePassword({
       currentPassword: formData.currentPassword,
       newPassword: formData.newPassword,
       confirmNewPassword: formData.confirmNewPassword,
     });
+
+    const result = updatedPassword.message
+    const errorMessage = updatedPassword.errorMessage
+
+    if(errorMessage){
+      console.log(`Erro ao atualizar a senha: ${errorMessage}`)
+    }
+    
+    alert(result)
     closeDialog();
+    return updatedPassword
   };
 
   return (
