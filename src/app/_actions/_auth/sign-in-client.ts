@@ -15,9 +15,8 @@ export const signInClient = async ({ email, password }: SignInClientProps) => {
       rememberMe: true,
     },
     {
-      onSuccess: (ctx) => {
+      onSuccess: () => {
         console.log("Conectado com sucesso!");
-        console.log(ctx.data);
         redirect("/");
       },
       onError: (ctx) => {

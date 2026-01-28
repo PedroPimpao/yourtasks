@@ -1,16 +1,13 @@
 import Header from "../../_components/header";
 import { getOneTask } from "../../_actions/_crud/getOneTask";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import DateFormat from "../../_components/date-format";
 import UpdateTaskDialog from "../../_components/update-task-dialog";
 import UpdatePrioritySelect from "../../_components/update-priority-select";
-import { deleteTask } from "../../_actions/_crud/deleteTask";
-import AlertTaskDialog from "../../_components/alert-task-dialog";
-import { revalidatePath } from "next/cache";
-import { startTask } from "../../_actions/change_task_status/start-task";
-import { finishTask } from "../../_actions/change_task_status/finish-task";
+import { TaskActions } from "../../_components/task-actions";
 import { Card } from "../../_components/ui/card";
 import { getServerSession } from "../../_actions/_auth/get-server-session";
+import { getUser } from "../../_actions/_auth/get-user";
 
 interface TaskPageProps {
   params: {
@@ -21,41 +18,16 @@ interface TaskPageProps {
 const TaskPage = async ({ params }: TaskPageProps) => {
   const { id } = await params;
   const data = await getServerSession();
-
+  const user = await getUser({ userID: data?.user.id });
   const task = await getOneTask(id);
 
   if (!task || !data?.user) {
-    notFound();
+    redirect('/')
   }
-
-  const onDelete = async () => {
-    "use server";
-    await deleteTask({
-      taskId: task.id,
-    });
-    revalidatePath("/");
-    redirect("/");
-  };
-
-  const onStart = async () => {
-    "use server";
-    await startTask({
-      taskID: task.id,
-    });
-    revalidatePath(`/tasks/${task.id}`);
-  };
-
-  const onFinish = async () => {
-    "use server";
-    await finishTask({
-      taskID: task.id,
-    });
-    revalidatePath(`/tasks/${task.id}`);
-  };
 
   return (
     <div className="relative min-h-screen">
-      <Header session={data} />
+      <Header user={user} />
       <div className="m-3">
         <div className="flex flex-row justify-between border-b pb-3">
           <h1 className="text-2xl font-bold">{task.title}</h1>
@@ -86,29 +58,33 @@ const TaskPage = async ({ params }: TaskPageProps) => {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 flex w-full flex-row items-center justify-center gap-2 p-3">
-        <AlertTaskDialog
+        <TaskActions
           dialogTitle="Excluir tarefa"
           dialogDescription="Deseja mesmo excluir a tarefa? Esta ação é irreversível"
           actionButtonLabel="Excluir"
           actionVariant={"destructive"}
-          actionFunction={onDelete}
+          action="delete"
+          taskID={task.id
+          }
         />
         {task.isPending && (
-          <AlertTaskDialog
+          <TaskActions
             dialogTitle="Iniciar tarefa"
             dialogDescription="Deseja mesmo iniciar a tarefa? Esta ação é irreversível"
             actionButtonLabel="Iniciar"
             actionVariant={"default"}
-            actionFunction={onStart}
+            action="start"
+            taskID={task.id}
           />
         )}
         {task.inProcess && (
-          <AlertTaskDialog
+          <TaskActions
             dialogTitle="Finalizar tarefa"
             dialogDescription="Deseja mesmo finalizar a tarefa? Esta ação é irreversível"
             actionButtonLabel="Finalizar"
             actionVariant={"default"}
-            actionFunction={onFinish}
+            action="finish"
+            taskID={task.id}
           />
         )}
       </div>

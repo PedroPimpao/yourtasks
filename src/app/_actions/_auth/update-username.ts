@@ -15,8 +15,25 @@ export const updateUserName = async ({
   try {
     const data = await getServerSession();
 
-    if (!data?.user.id) {
-      throw new Error("Usuário não autenticado");
+    if (!userID || userID.length === 0) {
+      return {
+        success: false,
+        errorMessage: `ID do usuário é obigatório`,
+      };
+    }
+
+    if (!newUsername || newUsername.length === 0) {
+      return {
+        success: false,
+        errorMessage: `Insira o novo nome de usuário`,
+      };
+    }
+
+    if (!data?.user) {
+      return {
+        success: false,
+        errorMessage: `Usuário não autenticado`,
+      };
     }
 
     await db.user.update({
@@ -29,16 +46,15 @@ export const updateUserName = async ({
     });
 
     return {
-      succsess: true,
-      message: "Nome de usuário alterado com sucesso!",
+      success: true,
+      errorMessage: null,
     };
   } catch (error) {
     const e = error as Error;
-    console.log(`ERRO ao alterar nome de usuário: ${e.message}`);
-
+    console.log(`[ERRO] Erro ao alterar nome de usuário: ${e.message}`);
     return {
-      succsess: false,
-      message: `Erro ao alterar nome de usuário`,
+      success: false,
+      errorMessage: `[ERRO] Erro ao alterar nome de usuário`,
     };
   }
 };

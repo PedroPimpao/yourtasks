@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,13 +12,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { toast } from "sonner";
 
 interface UpdatePrioritySelectProps {
-  taskIDProp: string
-  currentPriority: string
+  taskIDProp: string;
+  currentPriority: string;
 }
 
-const UpdatePrioritySelect = ({ taskIDProp, currentPriority }: UpdatePrioritySelectProps) => {
+const UpdatePrioritySelect = ({
+  taskIDProp,
+  currentPriority,
+}: UpdatePrioritySelectProps) => {
   const taskSchema = z.object({
     priority: z.string(),
   });
@@ -46,15 +50,28 @@ const UpdatePrioritySelect = ({ taskIDProp, currentPriority }: UpdatePrioritySel
                   onValueChange={async (value) => {
                     field.onChange(value);
 
-                    await updatePriority({
+                    const updatePriorityFunction = await updatePriority({
                       taskID: taskIDProp,
                       newPriority: value,
                     });
+                    const {
+                      success,
+                      message,
+                      errorMessage,
+                      updatedTaskPriority,
+                    } = updatePriorityFunction;
+
+                    if (!success) {
+                      toast.error(message, { position: "top-left" });
+                      console.log(errorMessage);
+                    }
+                    toast.success(message, { position: "top-left" });
+                    return updatedTaskPriority;
                   }}
                 >
                   <SelectTrigger className="w-30">
                     <FormLabel className="capitalize"></FormLabel>
-                    <SelectValue placeholder="Prioridade"/>
+                    <SelectValue placeholder="Prioridade" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="baixa">Baixa</SelectItem>

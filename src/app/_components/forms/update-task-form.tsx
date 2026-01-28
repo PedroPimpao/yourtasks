@@ -18,6 +18,7 @@ import { DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { updateTask } from "../../_actions/_crud/update-task";
+import { toast } from "sonner";
 
 interface UpdateTaskFormProps {
   taskID: string;
@@ -52,7 +53,7 @@ const UpdateTaskForm = ({ taskID, task, closeDialog }: UpdateTaskFormProps) => {
   });
 
   const onSubmit = async (data: TaskFormValues) => {
-    await updateTask({
+    const updateTaskFunction = await updateTask({
       taskProps: {
         id: taskID,
         title: data.title,
@@ -60,7 +61,14 @@ const UpdateTaskForm = ({ taskID, task, closeDialog }: UpdateTaskFormProps) => {
         dueDate: data.dueDate,
       },
     });
+    const { updatedTask, message, success, errorMessage } = updateTaskFunction
+    if(!success){
+      console.log(errorMessage)
+      toast.error(message, { position: "top-left" })
+    }
+    toast.success(message, { position: "top-left" })
     closeDialog();
+    return updatedTask
   };
 
   return (

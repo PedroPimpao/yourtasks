@@ -12,18 +12,35 @@ export const updatePriority = async ({
   taskID,
   newPriority,
 }: UpdatePriorityProps) => {
-  if (!newPriority) {
-    return;
-  }
+  try {
+    if (!newPriority) {
+      return {
+        success: false,
+        message: `[ERRO] Selecione uma prioridade`,
+      };
+    }
 
-  const updatedTask = await db.task.update({
-    where: {
-      id: taskID,
-    },
-    data: {
-      priority: newPriority,
-    },
-  });
-  revalidatePath(`/tasks/${taskID}`);
-  return updatedTask;
+    const updatedTaskPriority = await db.task.update({
+      where: {
+        id: taskID,
+      },
+      data: {
+        priority: newPriority,
+      },
+    });
+    
+    revalidatePath(`/tasks/${taskID}`);
+    return {
+      updatedTaskPriority,
+      success: true,
+      message: `Prioridada alterada com sucesso`,
+    };
+  } catch (error) {
+    const e = error as Error;
+    return {
+      success: false,
+      message: `Erro ao alterar prioridade`,
+      errorMessage: `[ERRO] Erro ao alterar prioridade: ${e.message}`,
+    };
+  }
 };

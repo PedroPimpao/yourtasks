@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 const updatePasswordSchema = z
   .object({
@@ -46,22 +47,25 @@ export const UpdatePasswordForm = ({
   });
 
   const onSubmit = async (formData: UpdatePasswordFormValues) => {
-    const updatedPassword = await updatePassword({
-      currentPassword: formData.currentPassword,
-      newPassword: formData.newPassword,
-      confirmNewPassword: formData.confirmNewPassword,
-    });
-
-    const result = updatedPassword.message
-    const errorMessage = updatedPassword.errorMessage
-
-    if(errorMessage){
-      console.log(`Erro ao atualizar a senha: ${errorMessage}`)
+    try {
+      const { success, errorMessage } = await updatePassword({
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+        confirmNewPassword: formData.confirmNewPassword,
+      });
+      if (!success) {
+        toast.error(errorMessage || "Erro ao atualizar a senha", {
+          position: "top-left",
+        });
+        return;
+      }
+      toast.success("Senha atualizada com sucesso!", { position: "top-left" });
+    } catch (error) {
+      const e = error as Error;
+      console.log(`Erro ao executar a ação: ${e.message}`);
+      toast.error("Erro ao executar a ação", { position: "top-left" });
     }
-    
-    alert(result)
     closeDialog();
-    return updatedPassword
   };
 
   return (

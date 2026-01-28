@@ -21,14 +21,28 @@ export const updatePassword = async ({
     if (!session?.user) {
       return {
         success: false,
-        message: `Usuário não autenticado`,
+        errorMessage: `Usuário não autenticado`,
+      };
+    }
+
+    if (!currentPassword || currentPassword.length === 0) {
+      return {
+        success: false,
+        errorMessage: `Insira a senha atual`,
+      };
+    }
+
+    if (!newPassword || newPassword.length === 0) {
+      return {
+        success: false,
+        errorMessage: `Insira a nova senha`,
       };
     }
 
     if (newPassword !== confirmNewPassword) {
       return {
         success: false,
-        message: "As senhas não coincidem",
+        errorMessage: "As senhas não coincidem",
       };
     }
 
@@ -43,14 +57,14 @@ export const updatePassword = async ({
 
     return {
       success: true,
-      message: "Senha atualizada com sucesso!",
+      errorMessage: null,
     };
   } catch (error) {
     const e = error as Error;
+    console.log(`Erro ao atualizar a senha: ${e.message}`);
     return {
       success: false,
-      message: `Erro ao atualizar a senha`,
-      errorMessage: `[ERRO]: ${e.message}`,
+      errorMessage: `[ERRO] Erro ao atualizar a senha`,
     };
   }
 };
