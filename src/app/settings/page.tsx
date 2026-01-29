@@ -1,6 +1,13 @@
-"use client"
+"use client";
 
-import { ChevronLeft, FolderPen, KeyRound, Mail, SunMoon } from "lucide-react";
+import {
+  ChevronLeft,
+  FolderPen,
+  KeyRound,
+  Mail,
+  SunMoon,
+  UserX,
+} from "lucide-react";
 import { Button } from "../_components/ui/button";
 import Link from "next/link";
 import SettingActionItem from "../_components/setting-action-item";
@@ -9,10 +16,26 @@ import { verifyEmail } from "../_actions/_auth/verify-email";
 import { getServerSession } from "../_actions/_auth/get-server-session";
 import UpdateUsernameDialog from "../_components/update-username-dialog";
 import { UpdatePasswordDialog } from "../_components/update-password-dialog";
+import { useEffect, useState } from "react";
 
 const SettingsPage = () => {
+  const [emailIsVerified, setEmailIsVerified] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const loadSession = async () => {
+      const res = await fetch("/api/session");
+      const data = await res.json();
+      setEmailIsVerified(data?.user?.emailVerified ?? false);
+    };
+
+    loadSession();
+  }, []);
+
   const onVerify = async () => {
     const data = await getServerSession();
+    if (data?.user.emailVerified) {
+      return;
+    }
     if (data?.user) {
       await verifyEmail(data.user.email);
     }
@@ -36,26 +59,44 @@ const SettingsPage = () => {
         <SettingActionItem
           title="Redefinir nome de usuário"
           description="Você pode trocar o seu nome de usuário"
-          icon={<FolderPen/>}
-          action={<UpdateUsernameDialog/>}
+          icon={<FolderPen />}
+          action={<UpdateUsernameDialog />}
+        />
+
+        <SettingActionItem
+          title="Redefinir email"
+          description="Você pode redefinir o endereço de email cadastrado"
+          icon={<Mail />}
+          action={<Button variant={"outline"}>Redefinir</Button>}
         />
 
         <SettingActionItem
           title="Redefinir senha"
           description="Você pode redefinir a senha do perfil"
           icon={<KeyRound />}
-          action={<UpdatePasswordDialog/>}
+          action={<UpdatePasswordDialog />}
         />
 
+        {!emailIsVerified ? (
+          <SettingActionItem
+            title="Verificação de email (Recomendado)"
+            description="Conclua está ação para garantir que tem acesso ao email cadastrado"
+            icon={<Mail />}
+            action={
+              <Button variant={"outline"} onClick={onVerify}>
+                Verificar
+              </Button>
+            }
+          />
+        ) : (
+          <SettingActionItem title="Email verificado" icon={<Mail />} />
+        )}
+
         <SettingActionItem
-          title="Verificação de email (Recomendado)"
-          description="Conclua está ação para garantir que tem acesso ao email cadastrado"
-          icon={<Mail />}
-          action={
-            <Button variant={"outline"} onClick={onVerify}>
-              Verificar
-            </Button>
-          }
+          title="Excluir perfil"
+          description="[CUIDADO] Exclua seu perfil permanentemente"
+          icon={<UserX />}
+          action={<Button variant={"destructive"}>Excluir</Button>}
         />
 
         <SettingActionItem

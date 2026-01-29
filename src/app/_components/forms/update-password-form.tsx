@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const updatePasswordSchema = z
   .object({
@@ -26,13 +27,7 @@ const updatePasswordSchema = z
 
 type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>;
 
-interface UpdatePasswordFormProps {
-  closeDialog: () => void;
-}
-
-export const UpdatePasswordForm = ({
-  closeDialog,
-}: UpdatePasswordFormProps) => {
+export const UpdatePasswordForm = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -65,7 +60,6 @@ export const UpdatePasswordForm = ({
       console.log(`Erro ao executar a ação: ${e.message}`);
       toast.error("Erro ao executar a ação", { position: "top-left" });
     }
-    closeDialog();
   };
 
   return (
@@ -103,6 +97,11 @@ export const UpdatePasswordForm = ({
                     </Button>
                   </div>
                 </FormControl>
+                <Link href={"/forgot-password"}>
+                  <span className="ml-3 text-sm text-green-300">
+                    Esqueci minha senha
+                  </span>
+                </Link>
               </FormItem>
             )}
           />
@@ -172,26 +171,16 @@ export const UpdatePasswordForm = ({
               </FormItem>
             )}
           />
-          <div className="flex w-full flex-row gap-3">
-            <Button
-              type="reset"
-              variant={"outline"}
-              className="flex-1"
-              onClick={closeDialog}
-            >
-              Cancelar
-            </Button>
-            <Button variant={"default"} type="submit" className="flex-1">
-              {form.formState.isSubmitting ? (
-                <>
-                  <Loader2 />
-                  Atualizando
-                </>
-              ) : (
-                "Atualizar"
-              )}
-            </Button>
-          </div>
+          <Button variant={"default"} type="submit" className="w-full">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader2 />
+                Atualizando
+              </>
+            ) : (
+              "Atualizar"
+            )}
+          </Button>
         </form>
       </Form>
     </>
