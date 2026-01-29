@@ -15,6 +15,23 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
+    sendResetPassword: async ({ url }) => {
+      try {
+        await resend.emails.send({
+          from: `${process.env.EMAIL_SENDER_ADDRESS}`,
+          // to: [`${user.email}`]
+          to: [`${process.env.EMAIL_DEVELOPER_ADDRESS}`],
+          subject: "Redefinição de senha",
+          text: `Clique no link resetar sua senha: ${url}`,
+        });
+        console.log("Email enviado com sucesso (Redefinição de senha)!");
+      } catch (error) {
+        console.log(`Erro ao enviar o email (Redefinição de senha): ${error}`);
+      }
+    },
+    onPasswordReset: async ({ user }) => {
+      console.log(`Senha redefinida para o usuário: ${user.email}`);
+    },
   },
   emailVerification: {
     sendVerificationEmail: async ({ url }) => {
@@ -26,13 +43,16 @@ export const auth = betterAuth({
           subject: "Verificação de email",
           text: `Clique no link para verificar o Email: ${url}`,
         });
-        console.log("Email enviado com sucesso!");
+        console.log("Email enviado com sucesso (Verificação de email)!");
       } catch (error) {
-        console.log("Erro ao enviar o email", error);
+        console.log("Erro ao enviar o email (Verificação de email):", error);
       }
     },
+    onEmailVerification: async ({ email }) => {
+      console.log(`Email verificado para o usuário: ${email}`);
+    },
     sendOnSignUp: true,
-    sendOnSignIn: true
+    sendOnSignIn: true,
     // autoSignInAfterVerification: true
   },
   socialProviders: {

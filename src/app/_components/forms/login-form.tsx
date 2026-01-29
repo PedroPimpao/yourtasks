@@ -16,6 +16,7 @@ import { Button } from "../ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { signInClient } from "../../_actions/_auth/sign-in-client";
+import Link from "next/link";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -87,6 +88,11 @@ export function LoginForm() {
                 </div>
               </FormControl>
               <FormMessage />
+              <Link href={"/forgot-password"}>
+                <span className="ml-3 text-sm text-green-300">
+                  Esqueci minha senha
+                </span>
+              </Link>
             </FormItem>
           )}
         />
