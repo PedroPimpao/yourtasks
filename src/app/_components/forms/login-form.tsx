@@ -17,6 +17,9 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { signInClient } from "../../_actions/_auth/sign-in-client";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { verifyEmail } from "../../_actions/_auth/verify-email";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
@@ -29,6 +32,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -37,11 +41,50 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = async (formData: LoginFormValues) => {
-    await signInClient({
-      email: formData.email,
-      password: formData.password,
-    });
+  const onSubmit = async ({ email, password }: LoginFormValues) => {
+    const onVerify = async () => {
+      await verifyEmail(email);
+    };
+
+    if (!email || !password) {
+      toast.error("Por favor, preencha todos os campos.", {
+        position: "top-left",
+      });
+      return;
+    }
+
+    try {
+      const { success, message, is403Error } = await signInClient({
+        email,
+        password,
+      });
+
+      if (!success) {
+        if (is403Error) {
+          toast.error(message || "Email não verificado", {
+            position: "top-left",
+            description: "Verifique seu email antes de continuar.",
+            action: {
+              label: "Verificar agora",
+              onClick: onVerify,
+            },
+          });
+        }
+        toast.error(message || "Erro ao conectar", { position: "top-left" });
+        return;
+      }
+
+      toast.success(message || "Conectado com sucesso!", {
+        position: "top-left",
+      });
+      router.replace("/");
+    } catch (error) {
+      const e = error as Error;
+      console.log(`Erro ao conectar: ${e.message}`);
+      toast.error("[ERRO] Erro ao conectar. Tente novamente mais tarde", {
+        position: "top-left",
+      });
+    }
   };
 
   return (
