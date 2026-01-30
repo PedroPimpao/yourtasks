@@ -17,6 +17,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { signUpClient } from "../../_actions/_auth/sign-up-client";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const signupSchema = z
   .object({
     name: z
@@ -40,6 +41,7 @@ type SignUpFormValues = z.infer<typeof signupSchema>;
 export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter()
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signupSchema),
@@ -77,6 +79,7 @@ export function SignUpForm() {
           "Cadastro realizado com sucesso! Por favor, verifique seu email",
         { position: "top-left" },
       );
+      router.replace('/login')
     } catch (error) {
       const e = error as Error;
       console.log(`Erro ao executar a ação: ${e.message}`);
