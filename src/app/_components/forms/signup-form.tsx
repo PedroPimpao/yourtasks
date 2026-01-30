@@ -16,6 +16,7 @@ import { Button } from "../../_components/ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { signUpClient } from "../../_actions/_auth/sign-up-client";
+import { toast } from "sonner";
 const signupSchema = z
   .object({
     name: z
@@ -50,12 +51,37 @@ export function SignUpForm() {
     },
   });
 
-  const onSubmit = async (formData: SignUpFormValues) => {
-    await signUpClient({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    })
+  const onSubmit = async ({ name, email, password }: SignUpFormValues) => {
+    if (!name || !email || !password) {
+      toast.error("Preencha todos os campos", { position: "top-left" });
+      return;
+    }
+
+    try {
+      const { success, message, is403Error } = await signUpClient({
+        name,
+        email,
+        password,
+      });
+
+      if (!success) {
+        toast.error(message || "Erro ao cadastrar", { position: "top-left" });
+        if (is403Error) {
+          toast.error("Email já cadastrado", { position: "top-left" });
+          return;
+        }
+        return;
+      }
+      toast.success(
+        message ||
+          "Cadastro realizado com sucesso! Por favor, verifique seu email",
+        { position: "top-left" },
+      );
+    } catch (error) {
+      const e = error as Error;
+      console.log(`Erro ao executar a ação: ${e.message}`);
+      toast.error("Erro ao executar a ação", { position: "top-left" });
+    }
   };
 
   return (

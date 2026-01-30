@@ -17,19 +17,24 @@ import { getServerSession } from "../_actions/_auth/get-server-session";
 import UpdateUsernameDialog from "../_components/update-username-dialog";
 import { UpdatePasswordDialog } from "../_components/update-password-dialog";
 import { useEffect, useState } from "react";
+import DeleteUserFlow from "../_components/delete-user-flow";
+import { useRouter } from "next/navigation";
 
 const SettingsPage = () => {
   const [emailIsVerified, setEmailIsVerified] = useState<boolean | null>(null);
-
+  const router = useRouter()
+  
   useEffect(() => {
     const loadSession = async () => {
       const res = await fetch("/api/session");
       const data = await res.json();
+      if(!data || !data.user){
+        router.replace('/')
+      }
       setEmailIsVerified(data?.user?.emailVerified ?? false);
     };
-
     loadSession();
-  }, []);
+  }, [router]);
 
   const onVerify = async () => {
     const data = await getServerSession();
@@ -96,7 +101,8 @@ const SettingsPage = () => {
           title="Excluir perfil"
           description="[CUIDADO] Exclua seu perfil permanentemente"
           icon={<UserX />}
-          action={<Button variant={"destructive"}>Excluir</Button>}
+          type="danger"
+          action={<DeleteUserFlow/>}
         />
 
         <SettingActionItem

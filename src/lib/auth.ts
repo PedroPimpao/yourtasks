@@ -12,6 +12,11 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
+  user: {
+    deleteUser: {
+      enabled: true
+    }
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
@@ -51,7 +56,7 @@ export const auth = betterAuth({
     onEmailVerification: async ({ email }) => {
       console.log(`Email verificado para o usuário: ${email}`);
     },
-    sendOnSignUp: true,
+    // sendOnSignUp: true,
     sendOnSignIn: true,
     // autoSignInAfterVerification: true
   },
