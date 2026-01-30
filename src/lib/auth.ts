@@ -14,8 +14,27 @@ export const auth = betterAuth({
   }),
   user: {
     deleteUser: {
-      enabled: true
-    }
+      enabled: true,
+    },
+    changeEmail: {
+      enabled: true,
+      sendChangeEmailConfirmation: async ({ url, newEmail }) => {
+        try {
+          await resend.emails.send({
+            from: `${process.env.EMAIL_SENDER_ADDRESS}`,
+            // to: [`${user.email}`]
+            to: [`${process.env.EMAIL_DEVELOPER_ADDRESS}`],
+            subject: "Confirmar atualização de email",
+            text: `Clique no link para aprovar alteração para ${newEmail}: ${url}`,
+          });
+          console.log("Email enviado com sucesso (Confirmação de atualização de email)!");
+        } catch (error) {
+          console.log(
+            `Erro ao enviar o email (Confirmação de atualização de email): ${error}`,
+          );
+        }
+      },
+    },
   },
   emailAndPassword: {
     enabled: true,
@@ -27,7 +46,7 @@ export const auth = betterAuth({
           // to: [`${user.email}`]
           to: [`${process.env.EMAIL_DEVELOPER_ADDRESS}`],
           subject: "Redefinição de senha",
-          text: `Clique no link resetar sua senha: ${url}`,
+          text: `Clique no link para resetar sua senha: ${url}`,
         });
         console.log("Email enviado com sucesso (Redefinição de senha)!");
       } catch (error) {

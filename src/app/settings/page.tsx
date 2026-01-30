@@ -19,6 +19,7 @@ import { UpdatePasswordDialog } from "../_components/update-password-dialog";
 import { useEffect, useState } from "react";
 import DeleteUserFlow from "../_components/delete-user-flow";
 import { useRouter } from "next/navigation";
+import ChangeEmailDialog from "../_components/change-email-dialog";
 
 const SettingsPage = () => {
   const [emailIsVerified, setEmailIsVerified] = useState<boolean | null>(null);
@@ -60,6 +61,7 @@ const SettingsPage = () => {
         </Link>
         <h1 className="text-lg font-semibold">Configurações</h1>
       </div>
+
       <div className="mr-5 ml-5 grid grid-cols-1 content-center gap-5 object-center p-4 md:grid-cols-2">
         <SettingActionItem
           title="Redefinir nome de usuário"
@@ -72,7 +74,7 @@ const SettingsPage = () => {
           title="Redefinir email"
           description="Você pode redefinir o endereço de email cadastrado"
           icon={<Mail />}
-          action={<Button variant={"outline"}>Redefinir</Button>}
+          action={<ChangeEmailDialog/>}
         />
 
         <SettingActionItem

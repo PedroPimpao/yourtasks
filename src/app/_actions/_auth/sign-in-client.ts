@@ -1,5 +1,4 @@
 import { authClient } from "@/src/lib/auth-client";
-// import { redirect } from "next/navigation";
 
 interface SignInClientProps {
   email: string;
@@ -22,7 +21,6 @@ export const signInClient = async ({ email, password }: SignInClientProps) => {
         success = true;
         message = "Conectado com sucesso!";
         console.log(message);
-        // redirect("/");
       },
       onError: (ctx) => {
         success = false;
@@ -31,11 +29,9 @@ export const signInClient = async ({ email, password }: SignInClientProps) => {
         if (ctx.error.status === 403) {
           message = "Email não verificado";
           is403Error = true;
-          // alert(message);
         }
         if (ctx.error.status === 401) {
           message = "Email ou senha incorretos";
-          // alert(message);
         }
       },
     },
