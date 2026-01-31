@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BadgeCheck,
   ChevronLeft,
   FolderPen,
   KeyRound,
@@ -12,14 +13,13 @@ import { Button } from "../_components/ui/button";
 import Link from "next/link";
 import SettingActionItem from "../_components/setting-action-item";
 import { ThemeSelect } from "../_components/theme-select";
-import { verifyEmail } from "../_actions/_auth/verify-email";
-import { getServerSession } from "../_actions/_auth/get-server-session";
 import UpdateUsernameDialog from "../_components/update-username-dialog";
 import { UpdatePasswordDialog } from "../_components/update-password-dialog";
 import { useEffect, useState } from "react";
 import DeleteUserFlow from "../_components/delete-user-flow";
 import { useRouter } from "next/navigation";
 import ChangeEmailDialog from "../_components/change-email-dialog";
+import VerifyEmailConfirm from "../_components/verify-email-confirm";
 
 const SettingsPage = () => {
   const [emailIsVerified, setEmailIsVerified] = useState<boolean | null>(null);
@@ -36,16 +36,6 @@ const SettingsPage = () => {
     };
     loadSession();
   }, [router]);
-
-  const onVerify = async () => {
-    const data = await getServerSession();
-    if (data?.user.emailVerified) {
-      return;
-    }
-    if (data?.user) {
-      await verifyEmail(data.user.email);
-    }
-  };
 
   return (
     <>
@@ -90,13 +80,11 @@ const SettingsPage = () => {
             description="Conclua está ação para garantir que tem acesso ao email cadastrado"
             icon={<Mail />}
             action={
-              <Button variant={"outline"} onClick={onVerify}>
-                Verificar
-              </Button>
+              <VerifyEmailConfirm/>
             }
           />
         ) : (
-          <SettingActionItem title="Email verificado" icon={<Mail />} />
+          <SettingActionItem title="Email verificado" icon={<BadgeCheck/>} />
         )}
 
         <SettingActionItem

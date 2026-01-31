@@ -1,9 +1,11 @@
 "use server";
 
 import { authClient } from "@/src/lib/auth-client";
-import { redirect } from "next/navigation";
 
 export const verifyEmail = async (email: string) => {
+  let success = false;
+  let message = "";
+
   await authClient.sendVerificationEmail(
     {
       email,
@@ -11,11 +13,16 @@ export const verifyEmail = async (email: string) => {
     },
     {
       onSuccess: () => {
-        redirect("/");
+        success = true;
+        message = "Email de verificação enviado com sucesso!";
+        console.log(message);
       },
       onError: (ctx) => {
-        console.log(`Erro ao enviar email: ${ctx.error.message}`)
+        success = false;
+        message = "Erro ao enviar email de verificação";
+        console.log(`${message}: ${ctx.error.message}`);
       },
     },
   );
+  return { success, message };
 };
