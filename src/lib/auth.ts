@@ -3,10 +3,14 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 // If your Prisma file is located elsewhere, you can change the path
 import "dotenv/config";
 import { db } from "./prisma";
-import { Resend } from "resend";
+import { VerificationEmail } from "../app/_components/emails/verify-email-template";
+import { ChangeEmailConfirmation } from "../app/_components/emails/change-email-confirmation";
+import { ResetPasswordEmail } from "../app/_components/emails/reset-password-email";
+import { sendEmail } from "./send-email";
+import { PasswordResetConfirmation } from "../app/_components/emails/password-reset-confirmation";
+import { VerifyEmailConfirmed } from "../app/_components/emails/verify-email-confirmed";
 
 const prisma = db;
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -18,16 +22,19 @@ export const auth = betterAuth({
     },
     changeEmail: {
       enabled: true,
-      sendChangeEmailConfirmation: async ({ url, newEmail }) => {
+      sendChangeEmailConfirmation: async ({ url, newEmail, user }) => {
         try {
-          await resend.emails.send({
-            from: `${process.env.EMAIL_SENDER_ADDRESS}`,
-            // to: [`${user.email}`]
-            to: [`${process.env.EMAIL_DEVELOPER_ADDRESS}`],
+          await sendEmail({
             subject: "Confirmar atualização de email",
-            text: `Clique no link para aprovar alteração para ${newEmail}: ${url}`,
+            react: ChangeEmailConfirmation({
+              url,
+              newEmail,
+              username: user.name,
+            }),
           });
-          console.log("Email enviado com sucesso (Confirmação de atualização de email)!");
+          console.log(
+            "Email enviado com sucesso (Confirmação de atualização de email)!",
+          );
         } catch (error) {
           console.log(
             `Erro ao enviar o email (Confirmação de atualização de email): ${error}`,
@@ -39,14 +46,11 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
-    sendResetPassword: async ({ url }) => {
+    sendResetPassword: async ({ url, user }) => {
       try {
-        await resend.emails.send({
-          from: `${process.env.EMAIL_SENDER_ADDRESS}`,
-          // to: [`${user.email}`]
-          to: [`${process.env.EMAIL_DEVELOPER_ADDRESS}`],
+        await sendEmail({
           subject: "Redefinição de senha",
-          text: `Clique no link para resetar sua senha: ${url}`,
+          react: ResetPasswordEmail({ url, username: user.name }),
         });
         console.log("Email enviado com sucesso (Redefinição de senha)!");
       } catch (error) {
@@ -54,25 +58,33 @@ export const auth = betterAuth({
       }
     },
     onPasswordReset: async ({ user }) => {
+      await sendEmail({
+        subject: "Senha redefinida com sucesso!",
+        react: PasswordResetConfirmation({
+          username: user.email,
+          email: user.email,
+        }),
+      });
       console.log(`Senha redefinida para o usuário: ${user.email}`);
     },
   },
   emailVerification: {
-    sendVerificationEmail: async ({ url }) => {
+    sendVerificationEmail: async ({ url, user }) => {
       try {
-        await resend.emails.send({
-          from: `${process.env.EMAIL_SENDER_ADDRESS}`,
-          // to: [`${user.email}`]
-          to: [`${process.env.EMAIL_DEVELOPER_ADDRESS}`],
+        await sendEmail({
           subject: "Verificação de email",
-          text: `Clique no link para verificar o Email: ${url}`,
+          react: VerificationEmail({ url, username: user.name }),
         });
         console.log("Email enviado com sucesso (Verificação de email)!");
       } catch (error) {
         console.log("Erro ao enviar o email (Verificação de email):", error);
       }
     },
-    onEmailVerification: async ({ email }) => {
+    onEmailVerification: async ({ name, email }) => {
+      await sendEmail({
+        subject: "Email verificado com sucesso!",
+        react: VerifyEmailConfirmed({ username: name, email }),
+      });
       console.log(`Email verificado para o usuário: ${email}`);
     },
     sendOnSignUp: true,

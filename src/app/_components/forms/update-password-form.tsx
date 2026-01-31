@@ -11,6 +11,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const updatePasswordSchema = z
   .object({
@@ -31,6 +32,7 @@ export const UpdatePasswordForm = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const router = useRouter()
 
   const form = useForm<UpdatePasswordFormValues>({
     resolver: zodResolver(updatePasswordSchema),
@@ -55,6 +57,7 @@ export const UpdatePasswordForm = () => {
         return;
       }
       toast.success("Senha atualizada com sucesso!", { position: "top-left" });
+      router.replace('/')
     } catch (error) {
       const e = error as Error;
       console.log(`Erro ao executar a ação: ${e.message}`);
