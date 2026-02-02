@@ -22,7 +22,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
   const task = await getOneTask(id);
 
   if (!task || !data?.user) {
-    redirect('/')
+    redirect("/");
   }
 
   return (
@@ -49,13 +49,17 @@ const TaskPage = async ({ params }: TaskPageProps) => {
             />
           </div>
         </div>
-        <div className="border-b p-3">
-          <h2 className="mt-2 font-semibold">Descrição:</h2>
-          <p className="text-justify">{task.description}</p>
-        </div>
-        <div className="border-b p-3">
-          {task.dueDate && <DateFormat date={task.dueDate} />}
-        </div>
+        {task.description && (
+          <div className="border-b p-3">
+            <h2 className="mt-2 font-semibold">Descrição:</h2>
+            <p className="text-justify">{task.description}</p>
+          </div>
+        )}
+        {task.dueDate && (
+          <div className="border-b p-3">
+            {task.dueDate && <DateFormat date={task.dueDate} />}
+          </div>
+        )}
       </div>
       <div className="absolute bottom-0 left-0 flex w-full flex-row items-center justify-center gap-2 p-3">
         <TaskActions
@@ -64,8 +68,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
           actionButtonLabel="Excluir"
           actionVariant={"destructive"}
           action="delete"
-          taskID={task.id
-          }
+          taskID={task.id}
         />
         {task.isPending && (
           <TaskActions

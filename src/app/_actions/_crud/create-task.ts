@@ -16,18 +16,37 @@ export const createTask = async (params: CreateTaskParams) => {
   const session = await getServerSession();
 
   if (!session) {
-    throw new Error("Usuário não autenticado");
+    return {
+      success: false,
+      errorMessage: "Usuário não autenticado",
+    };
   }
-  const priorityLevel = await getPriorityLevelUniqueTask({ currentPriority: params.priority })
-  await db.task.create({
-    data: {
-      title: params.title,
-      description: params.description,
-      dueDate: params.dueDate,
-      priority: params.priority,
-      priorityLevel: priorityLevel || 3,
-      userId: session.user.id,
-    },
-  });
-  revalidatePath("/");
+
+  try {
+    const priorityLevel = await getPriorityLevelUniqueTask({
+      currentPriority: params.priority,
+    });
+    await db.task.create({
+      data: {
+        title: params.title,
+        description: params.description,
+        dueDate: params.dueDate,
+        priority: params.priority,
+        priorityLevel: priorityLevel || 3,
+        userId: session.user.id,
+      },
+    });
+    revalidatePath("/");
+    return {
+      success: true,
+      errorMessage: null,
+    };
+  } catch (error) {
+    const e = error as Error;
+    console.log(`[ERRO] Erro ao criar tarefa: ${e.message}`);
+    return {
+      success: false,
+      errorMessage: "[ERRO] Erro ao criar tarefa",
+    };
+  }
 };

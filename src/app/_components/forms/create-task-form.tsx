@@ -19,6 +19,7 @@ import { ptBR } from "date-fns/locale";
 import { DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface CreateTaskFormProps {
   showSummary: () => void;
@@ -52,14 +53,34 @@ const CreateTaskForm = ({ showSummary }: CreateTaskFormProps) => {
     },
   });
 
-  const onSubmit = async (data: TaskFormValues) => {
-    await createTask({
-      title: data.title,
-      description: data.description,
-      dueDate: data.dueDate,
-      priority: data.priority,
-    });
-    showSummary();
+  const onSubmit = async ({
+    title,
+    description,
+    priority,
+    dueDate,
+  }: TaskFormValues) => {
+    try {
+      const { success, errorMessage } = await createTask({
+        title,
+        description,
+        dueDate,
+        priority,
+      });
+
+      if (!success) {
+        toast.error(errorMessage || "Erro ao criar tarefa", {
+          position: "top-left",
+        });
+        return;
+      }
+
+      toast.success("Tarefa criada com sucesso!", { position: "top-left" });
+      showSummary();
+    } catch (error) {
+      const e = error as Error;
+      toast.error("Erro ao criar tarefa", { position: "top-left" });
+      console.log(`Erro ao criar tarefa: ${e.message}`);
+    }
   };
 
   return (
