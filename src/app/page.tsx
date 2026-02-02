@@ -13,20 +13,18 @@ import {
 } from "./_components/ui/empty";
 import { FolderCheck } from "lucide-react";
 import { getServerSession } from "./_actions/_auth/get-server-session";
-import TasksStats from "./_components/tasksStats";
+import { TasksStats } from "./_components/tasksStats";
 import { Separator } from "./_components/ui/separator";
 import { getUser } from "./_actions/_auth/get-user";
-// import { fixAllTasksStatus } from "./_actions/change_task_status/fixAllTasksStatus";
-// import { updatePriorityLevelAllTasks } from "./_actions/_crud/update-priority-level";
+import { getStats } from "./_actions/_crud/get-stats";
 
 export default async function Home() {
   const data = await getServerSession();
   const user = await getUser({ userID: data?.user.id });
   const tasks = await getTasks();
   const currentDate = new Date();
+  const stats = await getStats();
 
-  // fixAllTasksStatus()
-  // updatePriorityLevelAllTasks()
   return (
     <>
       <Header user={user} />
@@ -37,9 +35,17 @@ export default async function Home() {
           </div>
           <DateFormat date={currentDate} />
         </div>
+        
         {tasks.length > 0 && <CreateTaskDialog user={user} />}
+
       </div>
-      <TasksStats />
+      {stats && (
+        <TasksStats
+          pendingTasks={stats?.pendingTasks}
+          tasksInProcess={stats?.tasksInProcess}
+          tasksCompleted={stats?.tasksCompleted}
+        />
+      )}
 
       <Separator />
 

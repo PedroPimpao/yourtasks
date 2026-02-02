@@ -1,4 +1,5 @@
 "use server";
+
 import { db } from "@/src/lib/prisma";
 import { getServerSession } from "../_auth/get-server-session";
 
@@ -12,9 +13,30 @@ export const getTasks = async () => {
   return db.task.findMany({
     where: {
       userId: data.user.id,
+      NOT: {
+        isCompleted: true
+      }
     },
-    orderBy: {
-      createdAt: "desc",
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+      {
+        priorityLevel: "asc",
+      },
+    ],
+  });
+};
+
+export const getTasksCount = async () => {
+  const data = await getServerSession();
+  if (!data?.user) {
+    return [];
+  }
+
+  return db.task.count({
+    where: {
+      userId: data.user.id,
     },
   });
 };
