@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "task" ADD COLUMN     "priorityLevel" INTEGER NOT NULL DEFAULT 3,
+ADD COLUMN     "statusLevel" INTEGER NOT NULL DEFAULT 1;

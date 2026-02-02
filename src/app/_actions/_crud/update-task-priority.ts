@@ -2,6 +2,7 @@
 
 import { db } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { getPriorityLevelUniqueTask } from "./update-priority-level";
 
 interface UpdatePriorityProps {
   taskID: string;
@@ -19,13 +20,14 @@ export const updatePriority = async ({
         message: `[ERRO] Selecione uma prioridade`,
       };
     }
-
+    const priorityLevel = await getPriorityLevelUniqueTask({ currentPriority: newPriority })
     const updatedTaskPriority = await db.task.update({
       where: {
         id: taskID,
       },
       data: {
         priority: newPriority,
+        priorityLevel: priorityLevel || 3
       },
     });
     

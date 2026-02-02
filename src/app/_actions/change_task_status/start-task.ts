@@ -24,6 +24,7 @@ export const startTask = async ({ taskID }: StartTaskProps) => {
         inProcess: true,
         isPending: false,
         status: "Em andamento",
+        statusLevel: 2
       },
     });
     revalidatePath(`/tasks/${taskID}`);

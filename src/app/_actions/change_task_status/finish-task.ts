@@ -24,6 +24,7 @@ export const finishTask = async ({ taskID }: FinishTaskProps) => {
         inProcess: false,
         isPending: false,
         status: "Concluido",
+        statusLevel: 3
       },
     });
 
