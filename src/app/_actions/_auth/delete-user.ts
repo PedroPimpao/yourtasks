@@ -18,7 +18,6 @@ export const deleteUser = async ({ password }: DeleteUserProps) => {
         success = true;
         message = "Conta excluída com sucesso!";
         console.log(message);
-        // redirect("/");
       },
       onError: (ctx) => {
         success = false;
@@ -27,11 +26,9 @@ export const deleteUser = async ({ password }: DeleteUserProps) => {
         if (ctx.error.status === 403) {
           message = "Email não verificado";
           is403Error = true;
-          // alert(message);
         }
         if (ctx.error.status === 401) {
           message = "Senha incorreta";
-          // alert(message);
         }
       },
     },

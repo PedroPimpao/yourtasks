@@ -1,5 +1,3 @@
-// Email para confirmar ao usuário sobre a atualização de senha
-
 import {
   Body,
   Container,

@@ -90,8 +90,6 @@ export const auth = betterAuth({
       console.log(`Email verificado para o usuário: ${email}`);
     },
     sendOnSignUp: true,
-    // sendOnSignIn: true,
-    // autoSignInAfterVerification: true
   },
   socialProviders: {
     google: {

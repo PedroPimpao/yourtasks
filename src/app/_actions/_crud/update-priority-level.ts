@@ -83,19 +83,15 @@ export const getPriorityLevelUniqueTask = async ({
 }: UpdatePriorityLevelProps) => {
   let newPriorityLevel = null;
   if (currentPriority === "baixa") {
-    // updateToPriorityLevelFour({ taskID });
     newPriorityLevel = 4;
   }
   if (currentPriority === "media") {
-    // updateToPriorityLevelThree({ taskID });
     newPriorityLevel = 3;
   }
   if (currentPriority === "alta") {
-    // updateToPriorityLevelTwo({ taskID });
     newPriorityLevel = 2;
   }
   if (currentPriority === "urgente") {
-    // updateToPriorityLevelOne({ taskID });
     newPriorityLevel = 1;
   }
   return newPriorityLevel;

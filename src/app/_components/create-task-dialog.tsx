@@ -11,13 +11,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { useState } from "react";
-// import {
-//   Drawer,
-//   DrawerClose,
-//   DrawerContent,
-//   DrawerHeader,
-//   DrawerTitle,
-// } from "./ui/drawer";
 import CreateTaskSummary from "./create-task-summary";
 import CreateTaskForm from "./forms/create-task-form";
 import Link from "next/link";
@@ -81,26 +74,8 @@ const CreateTaskDialog = ({ user }: CreateTaskDialogProps) => {
         </DialogContent>
       </Dialog>
 
-      {/* <Drawer
-        open={summaryDrawerIsOpen}
-        onOpenChange={setSummaryDrawerIsOpen}
-        direction="bottom"
-      >
-        <DrawerContent className="sm:block md:hidden lg:hidden">
-          <DrawerHeader>
-            <DrawerTitle>Resumo da Tarefa</DrawerTitle>
-          </DrawerHeader>
-          <CreateTaskSummary />
-          <div className="flex justify-center pr-4 pl-4">
-            <DrawerClose asChild className="">
-              <Button className="w-full">Fechar</Button>
-            </DrawerClose>
-          </div>
-        </DrawerContent>
-      </Drawer> */}
-
       <Dialog open={summaryDrawerIsOpen} onOpenChange={setSummaryDrawerIsOpen}>
-        <DialogContent className="sm:hidden md:hidden lg:block">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Resumo da tarefa:</DialogTitle>
           </DialogHeader>

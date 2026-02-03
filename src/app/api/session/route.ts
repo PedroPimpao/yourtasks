@@ -1,4 +1,3 @@
-// app/api/session/route.ts
 import { NextResponse } from "next/server";
 import { getServerSession } from "../../_actions/_auth/get-server-session";
 
