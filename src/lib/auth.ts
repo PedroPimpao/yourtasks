@@ -57,6 +57,7 @@ export const auth = betterAuth({
         console.log(`Erro ao enviar o email (Redefinição de senha): ${error}`);
       }
     },
+    // Adicionar Error Handler
     onPasswordReset: async ({ user }) => {
       await sendEmail({
         subject: "Senha redefinida com sucesso!",
@@ -80,6 +81,7 @@ export const auth = betterAuth({
         console.log("Erro ao enviar o email (Verificação de email):", error);
       }
     },
+    // Adicionar Error Handler
     onEmailVerification: async ({ name, email }) => {
       await sendEmail({
         subject: "Email verificado com sucesso!",

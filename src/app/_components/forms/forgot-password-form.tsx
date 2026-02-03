@@ -16,10 +16,19 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { findEmail } from "../../_actions/_auth/find-email";
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email({ message: "Email inválido" }),
-});
+const forgotPasswordSchema = z
+  .object({
+    email: z.email({ message: "Email inválido" }),
+  })
+  .refine(
+    async (data) => {
+      const user = await findEmail(data.email);
+      return !!user;
+    },
+    { message: "Usuário não encontrado", path: ["email"] },
+  );
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
@@ -33,18 +42,23 @@ const ForgotPasswordForm = () => {
 
   const onSubmit = async (formData: ForgotPasswordFormValues) => {
     try {
-        const { success, errorMessage } = await forgotPassword({
-          userEmail: formData.email,
+      const { success, errorMessage } = await forgotPassword({
+        userEmail: formData.email,
+      });
+      if (!success) {
+        toast.error(errorMessage || "Erro ao solicitar redefinição de senha", {
+          position: "top-left",
         });
-        if(!success){
-            toast.error(errorMessage || "Erro ao solicitar redefinição de senha", { position: "top-left" })
-            return
-        }
-        toast.success("Instruções de recuperação de senha enviadas para seu email!", { position: "top-left" })
+        return;
+      }
+      toast.success(
+        "Instruções de recuperação de senha enviadas para seu email!",
+        { position: "top-left" },
+      );
     } catch (error) {
-        const e = error as Error
-        toast.error("Erro ao executar a ação")
-        console.log(`Erro ao executar a ação: ${e.message}`)
+      const e = error as Error;
+      toast.error("Erro ao executar a ação");
+      console.log(`Erro ao executar a ação: ${e.message}`);
     }
   };
   return (

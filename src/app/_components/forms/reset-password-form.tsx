@@ -46,13 +46,13 @@ export const ResetPasswordForm = () => {
   });
 
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
   const router = useRouter()
-
+  
   const onSubmit = async ({
     newPassword,
     confirmNewPassword,
   }: ResetPasswordFormValues) => {
+    const token = searchParams.get("token");
     if (!newPassword || newPassword.length === 0) {
       toast.error(`Nova senha é necessária`, { position: "top-left" });
       return;
@@ -64,7 +64,7 @@ export const ResetPasswordForm = () => {
     }
     try {
       const { success, errorMessage } = await resetPassword({
-        token,
+        token: token,
         newPassword,
         confirmNewPassword,
       });

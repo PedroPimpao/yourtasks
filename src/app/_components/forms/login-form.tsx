@@ -20,13 +20,22 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { verifyEmail } from "../../_actions/_auth/verify-email";
+import { findEmail } from "../../_actions/_auth/find-email";
 
-const loginSchema = z.object({
-  email: z.string().email({ message: "Email inválido" }),
-  password: z
-    .string()
-    .min(8, { message: "Senha deve ter no mínimo 8 caracteres" }),
-});
+const loginSchema = z
+  .object({
+    email: z.email({ message: "Email inválido" }),
+    password: z
+      .string()
+      .min(8, { message: "Senha deve ter no mínimo 8 caracteres" }),
+  })
+  .refine(
+    async (data) => {
+      const user = await findEmail(data.email);
+      return !!user;
+    },
+    { message: "Usuário não encontrado", path: ["email"] },
+  );
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 

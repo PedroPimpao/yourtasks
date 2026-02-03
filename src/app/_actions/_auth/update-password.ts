@@ -3,6 +3,8 @@
 import { auth } from "@/src/lib/auth";
 import { headers } from "next/headers";
 import { getServerSession } from "./get-server-session";
+import { sendEmail } from "@/src/lib/send-email";
+import { UpdatedPasswordConfirmation } from "../../_components/emails/updated-password-confirmation";
 
 interface UpdatePasswordProps {
   currentPassword: string;
@@ -54,6 +56,11 @@ export const updatePassword = async ({
       },
       headers: await headers(),
     });
+
+    await sendEmail({
+      subject: "Confirmação de redefinição de senha",
+      react: UpdatedPasswordConfirmation({ username: session.user.name, email: session.user.email})
+    })
 
     return {
       success: true,
