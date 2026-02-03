@@ -13,7 +13,7 @@ export const signUpClient = async ({
 }: SignUpClientProps) => {
   let success = false;
   let message = "";
-  let is403Error = false;
+  let userExists = false;
   await authClient.signUp.email(
     {
       name,
@@ -32,9 +32,9 @@ export const signUpClient = async ({
         success = false;
         message = "Erro ao cadastrar";
         console.log(`${message}: ${ctx.error.message}`);
-        if (ctx.error.status === 403) {
+        if (ctx.error.status === 422) {
           message = "Email já cadastrado";
-          is403Error = true;
+          userExists = true;
         }
       },
     },
@@ -42,6 +42,6 @@ export const signUpClient = async ({
   return {
     success,
     message,
-    is403Error,
+    userExists,
   };
 };

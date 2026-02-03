@@ -23,7 +23,7 @@ const signupSchema = z
     name: z
       .string()
       .min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
-    email: z.string().email({ message: "Email inválido" }),
+    email: z.email({ message: "Email inválido" }),
     password: z
       .string()
       .min(8, { message: "Senha deve ter no mínimo 8 caracteres" }),
@@ -60,7 +60,7 @@ export function SignUpForm() {
     }
 
     try {
-      const { success, message, is403Error } = await signUpClient({
+      const { success, message, userExists } = await signUpClient({
         name,
         email,
         password,
@@ -68,8 +68,9 @@ export function SignUpForm() {
 
       if (!success) {
         toast.error(message || "Erro ao cadastrar", { position: "top-left" });
-        if (is403Error) {
-          toast.error("Email já cadastrado", { position: "top-left" });
+        if (userExists) {
+          toast.error(message || "Email já cadastrado", { position: "top-left" });
+          router.replace('/login')
           return;
         }
         return;
