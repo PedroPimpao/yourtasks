@@ -2,6 +2,7 @@
 
 import { db } from "@/src/lib/prisma";
 import { getTasks } from "./getTasks";
+import { Task } from "@prisma/client";
 
 interface UpdatePriorityLevelProps {
   taskID?: string;
@@ -62,7 +63,7 @@ export const updateToPriorityLevelFour = async ({
 
 export const updatePriorityLevelAllTasks = async () => {
   const allTasks = await getTasks();
-  allTasks.map((task: any) => {
+  allTasks.map((task: Task) => {
     if (task.priority === "baixa") {
       updateToPriorityLevelFour({ taskID: task.id });
     }
