@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Button } from "../_components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { ResetPasswordForm } from "../_components/forms/reset-password-form";
+import { Suspense } from "react";
+import Loading from "../_components/loader";
 
 const ResetPasswordPage = async () => {
-
   return (
     <>
       <div className="relative flex min-h-screen flex-col items-center justify-center p-4">
@@ -20,7 +21,9 @@ const ResetPasswordPage = async () => {
               Defina sua nova senha para continuar!
             </p>
           </div>
-          <ResetPasswordForm/>
+          <Suspense fallback={<Loading />}>
+            <ResetPasswordForm />
+          </Suspense>
         </div>
       </div>
     </>
