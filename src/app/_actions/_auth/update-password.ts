@@ -59,7 +59,8 @@ export const updatePassword = async ({
 
     await sendEmail({
       subject: "Confirmação de redefinição de senha",
-      react: UpdatedPasswordConfirmation({ username: session.user.name, email: session.user.email})
+      react: UpdatedPasswordConfirmation({ username: session.user.name, email: session.user.email}),
+      email: session.user.email
     })
 
     return {

@@ -31,6 +31,7 @@ export const auth = betterAuth({
               newEmail,
               username: user.name,
             }),
+            email: user.email
           });
           console.log(
             "Email enviado com sucesso (Confirmação de atualização de email)!",
@@ -51,6 +52,7 @@ export const auth = betterAuth({
         await sendEmail({
           subject: "Redefinição de senha",
           react: ResetPasswordEmail({ url, username: user.name }),
+          email: user.email
         });
         console.log("Email enviado com sucesso (Redefinição de senha)!");
       } catch (error) {
@@ -65,6 +67,7 @@ export const auth = betterAuth({
           username: user.email,
           email: user.email,
         }),
+        email: user.email
       });
       console.log(`Senha redefinida para o usuário: ${user.email}`);
     },
@@ -75,6 +78,7 @@ export const auth = betterAuth({
         await sendEmail({
           subject: "Verificação de email",
           react: VerificationEmail({ url, username: user.name }),
+          email: user.email
         });
         console.log("Email enviado com sucesso (Verificação de email)!");
       } catch (error) {
@@ -86,6 +90,7 @@ export const auth = betterAuth({
       await sendEmail({
         subject: "Email verificado com sucesso!",
         react: VerifyEmailConfirmed({ username: name, email }),
+        email
       });
       console.log(`Email verificado para o usuário: ${email}`);
     },
