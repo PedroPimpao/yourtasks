@@ -62,7 +62,7 @@ export const updateToPriorityLevelFour = async ({
 
 export const updatePriorityLevelAllTasks = async () => {
   const allTasks = await getTasks();
-  allTasks.map((task) => {
+  allTasks.map((task: any) => {
     if (task.priority === "baixa") {
       updateToPriorityLevelFour({ taskID: task.id });
     }
