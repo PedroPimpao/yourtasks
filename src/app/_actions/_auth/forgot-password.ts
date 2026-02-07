@@ -19,7 +19,7 @@ export const forgotPassword = async ({ userEmail }: ForgotPasswordProps) => {
     await auth.api.requestPasswordReset({
       body: {
         email: userEmail,
-        redirectTo: `${process.env.APP_URL_PROD}/reset-password`,
+        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
       },
       headers: await headers(),
     });
