@@ -3,20 +3,55 @@
 import Image from "next/image";
 import { DoorOpen, Github } from "lucide-react";
 import { Button } from "./ui/button";
-import { authClient } from "@/src/lib/auth-client";
 import Link from "next/link";
+import {
+  signInWithGoogle,
+  signInWithGithub,
+} from "../_actions/_auth/social-auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const SocialAuthOptions = () => {
-  const signInWithGoogle = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-    });
+  const router = useRouter();
+
+  const onAuthGoogle = async () => {
+    try {
+      const { success, message } = await signInWithGoogle();
+      if (!success) {
+        toast.error(message || "Erro ao conectar", { position: "top-left" });
+        return;
+      }
+      toast.success(message || "Conectado com sucesso!", {
+        position: "top-left",
+      });
+      router.replace("/");
+    } catch (error) {
+      const e = error as Error;
+      console.log(`Erro ao conectar: ${e.message}`);
+      toast.error("[ERRO] Erro ao conectar. Tente novamente mais tarde", {
+        position: "top-left",
+      });
+    }
   };
 
-  const signInWithGithub = async () => {
-    await authClient.signIn.social({
-      provider: "github",
-    });
+  const onAuthGithub = async () => {
+    try {
+      const { success, message } = await signInWithGithub();
+      if (!success) {
+        toast.error(message || "Erro ao conectar", { position: "top-left" });
+        return;
+      }
+      toast.success(message || "Conectado com sucesso!", {
+        position: "top-left",
+      });
+      router.replace("/");
+    } catch (error) {
+      const e = error as Error;
+      console.log(`Erro ao conectar: ${e.message}`);
+      toast.error("[ERRO] Erro ao conectar. Tente novamente mais tarde", {
+        position: "top-left",
+      });
+    }
   };
 
   return (
@@ -24,7 +59,7 @@ const SocialAuthOptions = () => {
       <Button
         className="flex cursor-pointer flex-row items-center justify-center gap-2"
         variant={"outline"}
-        onClick={signInWithGoogle}
+        onClick={onAuthGoogle}
       >
         <Image src={"/google.svg"} alt="Google" height={18} width={18} />
         <p className="font-bold">Google</p>
@@ -32,7 +67,7 @@ const SocialAuthOptions = () => {
       <Button
         className="flex cursor-pointer flex-row items-center justify-center gap-2"
         variant={"outline"}
-        onClick={signInWithGithub}
+        onClick={onAuthGithub}
       >
         <Github size={18} width={18} />
         <p className="font-bold">GitHub</p>
