@@ -29,7 +29,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
     <div className="relative min-h-screen">
       <Header user={user} />
       <div className="m-3">
-        <div className="flex flex-row justify-between border-b pb-3">
+        <div className="flex flex-col gap-2 border-b pb-3 sm:flex-row sm:justify-between">
           <h1 className="text-2xl font-bold text-wrap">{task.title}</h1>
           <div className="flex flex-row gap-2">
             <UpdateTaskDialog
@@ -40,7 +40,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
                 dueDate: task?.dueDate || undefined,
               }}
             />
-            <Card className="flex justify-center rounded-md p-1 py-0 pr-3 pl-3 text-sm text-wrap capitalize">
+            <Card className="flex justify-center rounded-md p-1 py-0 pr-3 pl-3 text-sm text-nowrap capitalize">
               {task.status}
             </Card>
             <UpdatePrioritySelect
