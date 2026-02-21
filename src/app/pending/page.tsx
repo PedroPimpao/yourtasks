@@ -4,16 +4,18 @@ import Header from "../_components/header";
 import { Separator } from "../_components/ui/separator";
 import { getPendingTasks } from "../_actions/_crud/get-pending-tasks";
 import { TaskCard } from "../_components/task-card";
+import { getStats } from "../_actions/_crud/get-stats";
 
 const PendingPage = async () => {
   const data = await getServerSession();
   const user = await getUser({ userID: data?.user.id });
   const pendingTasks = await getPendingTasks();
+  const stats = await getStats()
 
   return (
     <>
       <Header user={user} />
-      <h1 className="m-4 text-2xl font-semibold">Tarefas pendentes</h1>
+      <h1 className="m-4 text-2xl font-light">Tarefas pendentes: {stats?.pendingTasks}</h1>
       <Separator />
 
       {pendingTasks.length > 0 ? (

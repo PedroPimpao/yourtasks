@@ -4,16 +4,18 @@ import Header from "../_components/header";
 import { Separator } from "../_components/ui/separator";
 import { getInProcessTasks } from "../_actions/_crud/get-inprocess-tasks";
 import { TaskCard } from "../_components/task-card";
+import { getStats } from "../_actions/_crud/get-stats";
 
 const InProcessPage = async () => {
   const data = await getServerSession();
   const user = await getUser({ userID: data?.user.id });
   const inProcessTasks = await getInProcessTasks();
+  const stats = await getStats()
 
   return (
     <>
       <Header user={user} />
-      <h1 className="m-4 text-2xl font-semibold">Tarefas em andamento</h1>
+      <h1 className="m-4 text-2xl font-light">Tarefas em andamento: {stats?.tasksInProcess}</h1>
       <Separator />
 
       {inProcessTasks.length > 0 ? (

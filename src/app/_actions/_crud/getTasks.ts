@@ -28,15 +28,4 @@ export const getTasks = async () => {
   });
 };
 
-export const getTasksCount = async () => {
-  const data = await getServerSession();
-  if (!data?.user) {
-    return [];
-  }
 
-  return db.task.count({
-    where: {
-      userId: data.user.id,
-    },
-  });
-};

@@ -7,7 +7,7 @@ export const getStats = async () => {
   const data = await getServerSession();
 
   if (!data?.user) {
-    return;
+    return ;
   }
 
   const pendingTasks = await db.task.count({
