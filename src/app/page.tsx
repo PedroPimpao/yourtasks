@@ -1,8 +1,6 @@
 import Header from "./_components/header";
-import Link from "next/link";
 import CreateTaskDialog from "./_components/create-task-dialog";
 import { getTasks } from "./_actions/_crud/getTasks";
-import TaskCard from "./_components/task-card";
 import DateFormat from "./_components/date-format";
 import {
   Empty,
@@ -17,6 +15,7 @@ import { TasksStats } from "./_components/tasksStats";
 import { Separator } from "./_components/ui/separator";
 import { getUser } from "./_actions/_auth/get-user";
 import { getStats } from "./_actions/_crud/get-stats";
+import { TaskCard } from "./_components/task-card";
 
 export default async function Home() {
   const data = await getServerSession();
@@ -35,9 +34,8 @@ export default async function Home() {
           </div>
           <DateFormat date={currentDate} />
         </div>
-        
-        {tasks.length > 0 && <CreateTaskDialog user={user} />}
 
+        {tasks.length > 0 && <CreateTaskDialog user={user} />}
       </div>
       {stats && (
         <TasksStats
@@ -50,17 +48,17 @@ export default async function Home() {
       <Separator />
 
       {tasks.length > 0 ? (
-        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 m-3">
           {tasks.map((task) => (
-            <Link href={`/tasks/${task.id}`} key={task.id}>
-              <TaskCard
-                key={task.id}
-                taskTitle={task.title}
-                taskPriority={task.priority}
-                taskStatus={task.status}
-                taskDueDate={task.dueDate}
-              />
-            </Link>
+              <div key={task.id}>
+                <TaskCard
+                  taskHref={`/tasks/${task.id}`}
+                  taskTitle={task.title}
+                  taskPriority={task.priority}
+                  taskStatus={task.status}
+                  taskDueDate={task.dueDate}
+                />
+              </div>
           ))}
         </div>
       ) : (

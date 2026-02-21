@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { getServerSession } from "../_actions/_auth/get-server-session";
 import { getUser } from "../_actions/_auth/get-user";
 import Header from "../_components/header";
 import { Separator } from "../_components/ui/separator";
-import TaskCard from "../_components/task-card";
 import { getInProcessTasks } from "../_actions/_crud/get-inprocess-tasks";
+import { TaskCard } from "../_components/task-card";
 
 const InProcessPage = async () => {
   const data = await getServerSession();
@@ -18,17 +17,18 @@ const InProcessPage = async () => {
       <Separator />
 
       {inProcessTasks.length > 0 ? (
-        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 m-3">
           {inProcessTasks.map((task) => (
-            <Link href={`/tasks/${task.id}`} key={task.id}>
+            <div key={task.id}>
               <TaskCard
                 key={task.id}
                 taskTitle={task.title}
                 taskPriority={task.priority}
                 taskStatus={task.status}
                 taskDueDate={task.dueDate}
+                taskHref={`/tasks/${task.id}`}
               />
-            </Link>
+            </div>
           ))}
         </div>
       ) : (
