@@ -30,7 +30,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
       <Header user={user} />
       <div className="m-3">
         <div className="flex flex-row justify-between border-b pb-3">
-          <h1 className="text-2xl font-bold">{task.title}</h1>
+          <h1 className="text-2xl font-bold text-wrap">{task.title}</h1>
           <div className="flex flex-row gap-2">
             <UpdateTaskDialog
               task={{
