@@ -40,7 +40,7 @@ const TaskPage = async ({ params }: TaskPageProps) => {
                 dueDate: task?.dueDate || undefined,
               }}
             />
-            <Card className="flex justify-center rounded-md p-1 py-0 pr-3 pl-3 text-sm text-nowrap capitalize">
+            <Card className="flex justify-center rounded-md p-1 py-0 pr-3 pl-3 text-sm text-wrap capitalize">
               {task.status}
             </Card>
             <UpdatePrioritySelect
