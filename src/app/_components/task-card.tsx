@@ -43,29 +43,29 @@ const priorityMap: Record<
   baixa: {
     label: "Baixa",
     strip: "bg-green-500",
-    pill: "border-green-500/30 text-green-600 bg-green-500/10 hover:bg-green-500/10 dark:text-green-400 dark:border-green-500/30 dark:bg-green-500/10",
-    btn: "border-green-500/40 text-green-700 bg-green-500/10 hover:bg-green-600 hover:text-white hover:border-green-600 dark:text-green-400 dark:hover:text-white",
+    pill: "border-green-500/30 text-white bg-green-500/80 hover:bg-green-500/80 dark:text-white dark:border-green-500/30 dark:bg-green-500/80",
+    btn: "border-green-500/40 text-white bg-green-500/80 hover:bg-green-500 hover:text-white hover:border-green-600 dark:text-white dark:bg-green-500/80 dark:hover:bg-green-500",
     icon: <ChevronDown size={11} />,
   },
   media: {
     label: "Média",
     strip: "bg-yellow-400",
-    pill: "border-yellow-500/30 text-yellow-700 bg-yellow-400/10 hover:bg-yellow-400/10 dark:text-yellow-300 dark:border-yellow-400/30 dark:bg-yellow-400/10",
-    btn: "border-yellow-500/40 text-yellow-700 bg-yellow-400/10 hover:bg-yellow-500 hover:text-white hover:border-yellow-500 dark:text-yellow-300 dark:hover:text-white",
+    pill: "border-yellow-500/30 text-white bg-yellow-500/80 hover:bg-yellow-500/80 dark:text-white dark:border-yellow-400/30 dark:bg-yellow-400/80",
+    btn: "border-yellow-500/40 text-white bg-yellow-500/80 hover:bg-yellow-500 hover:text-white hover:border-yellow-500 dark:text-white dark:bg-yellow-500/80 dark:hover:bg-yellow-500",
     icon: <Minus size={11} />,
   },
   alta: {
     label: "Alta",
     strip: "bg-orange-500",
-    pill: "border-orange-500/30 text-orange-600 bg-orange-500/10 hover:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/30 dark:bg-orange-500/10",
-    btn: "border-orange-500/40 text-orange-700 bg-orange-500/10 hover:bg-orange-600 hover:text-white hover:border-orange-600 dark:text-orange-400 dark:hover:text-white",
+    pill: "border-orange-500/30 text-white bg-orange-500/80 hover:bg-orange-500/80 dark:text-white dark:border-orange-500/30 dark:bg-orange-500/80",
+    btn: "border-orange-500/40 text-white bg-orange-500/80 hover:bg-orange-500 hover:text-white hover:border-orange-600 dark:text-white dark:bg-orange-500/80 dark:hover:bg-orange-500",
     icon: <ChevronUp size={11} />,
   },
   urgente: {
     label: "Urgente",
     strip: "bg-rose-500",
-    pill: "border-rose-500/30 text-rose-600 bg-rose-500/10 hover:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/30 dark:bg-rose-500/10",
-    btn: "border-rose-500/40 text-rose-700 bg-rose-500/10 hover:bg-rose-600 hover:text-white hover:border-rose-600 dark:text-rose-400 dark:hover:text-white",
+    pill: "border-rose-500/30 text-white bg-red-600/80 dark:text-rose-300 dark:border-rose-500/30 dark:bg-red-900",
+    btn: "border-rose-500/30 text-white bg-red-600/80 hover:bg-red-600 hover:text-white hover:border-rose-600 dark:text-white dark:bg-red-600/60 dark:hover:bg-red-600",
     icon: <AlertTriangle size={11} />,
   },
 };
@@ -168,14 +168,14 @@ export const TaskCard = ({
           variant="outline"
           size="sm"
           className={cn(
-            "h-8 rounded-xl border text-[12px] font-medium",
+            "h-8 rounded-md border text-[12px] font-medium",
             "transition-all duration-200 hover:scale-[1.03]",
             priority.btn,
           )}
           asChild
         >
           <Link href={taskHref}>
-            Acessar tarefa
+            Detalhes
             <ArrowRight size={13} className="ml-1.5" />
           </Link>
         </Button>
